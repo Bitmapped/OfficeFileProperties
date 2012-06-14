@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using OfficeFileProperties.File;
+
+namespace OfficeFileProperties.File.Office
+{
+    /// <summary>
+    /// Additional properties specific to Microsoft Office files.
+    /// </summary>
+    interface IOfficeFileProperties: IFileProperties
+    {
+        string Author { get; }
+        string Company { get; }
+        string Title { get; }
+    }
+}
