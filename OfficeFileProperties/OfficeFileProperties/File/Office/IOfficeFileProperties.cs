@@ -9,7 +9,7 @@ namespace OfficeFileProperties.File.Office
     /// <summary>
     /// Additional properties specific to Microsoft Office files.
     /// </summary>
-    interface IOfficeFileProperties: IFileProperties
+    public interface IOfficeFileProperties: IFileProperties
     {
         string Author { get; }
         string Company { get; }

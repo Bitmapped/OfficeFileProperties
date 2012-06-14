@@ -123,7 +123,7 @@ namespace OfficeFileProperties.File.Office.OpenXml
             this.fileProperties.filename = this.filename;
 
             // filetype
-            this.fileProperties.fileType = OfficeFileProperties.FileTypeEnum.MicrosoftWord;
+            this.fileProperties.fileType = FileTypeEnum.MicrosoftWord;
             
             // createdTimeUtc
             try

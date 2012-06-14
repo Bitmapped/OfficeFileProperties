@@ -10,14 +10,23 @@ namespace OfficeFileProperties.File
     /// </summary>
     class FileProperties : IFileProperties
     {
-        // Define enum for this type of file.
-        public enum FileTypeEnum { MicrosoftWord, MicrosoftExcel, MicrosoftAccess, MicrosoftPowerPoint, OtherType, UnknownType };
 
         // Define internal variables for storing file properties.
         internal string filename;
         internal bool fileLoaded;
         internal DateTime createdTimeUtc, modifiedTimeUtc;
         internal FileTypeEnum fileType = FileTypeEnum.UnknownType;
+
+        /// <summary>
+        /// Access file type.
+        /// </summary>
+        public FileTypeEnum FileType
+        {
+            get
+            {
+                return this.fileType;
+            }
+        }
 
         /// <summary>
         /// Filename
