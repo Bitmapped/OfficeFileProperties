@@ -19,6 +19,10 @@ namespace OfficeFileProperties.File.Office.Dao
         private AccessDao.Database file;
         private OfficeFileProperties fileProperties;
 
+        // Instantiate shared Access Dao database objects.
+        private AccessDao.DBEngine dbEngine;
+        private AccessDao.Workspace dbWorkspace;
+
         /// <summary>
         /// Access file properties.
         /// </summary>
@@ -45,6 +49,10 @@ namespace OfficeFileProperties.File.Office.Dao
         public DaoFile()
         {
             ClearProperties();
+
+            // Instantiate Dao engine and workspace.
+            this.dbEngine = new AccessDao.DBEngine();
+            this.dbWorkspace = dbEngine.CreateWorkspace("", "admin", "", AccessDao.WorkspaceTypeEnum.dbUseJet);
         }
 
         /// <summary>
@@ -92,12 +100,8 @@ namespace OfficeFileProperties.File.Office.Dao
             // Store filename.
             this.filename = filename;
 
-            // Instantiate Dao engine and workspace.
-            var dbEngine = new AccessDao.DBEngine();
-            var dbWorkspace = dbEngine.CreateWorkspace("", "admin", "", AccessDao.WorkspaceTypeEnum.dbUseJet);
-
             // Load file.
-            this.file = dbWorkspace.OpenDatabase(filename, false, true, "");
+            this.file = this.dbWorkspace.OpenDatabase(filename, false, true, "");
 
             // Loads file properties.
             LoadProperties();
