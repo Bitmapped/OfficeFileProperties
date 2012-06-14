@@ -60,7 +60,6 @@
     <Compile Include="File\Generic\GenericFileProperties.cs" />
     <Compile Include="File\IFile.cs" />
     <Compile Include="File\IFileProperties.cs" />
-    <Compile Include="Exceptions\NullPropertyException.cs" />
     <Compile Include="File\Office\Dao\DaoFile.cs" />
     <Compile Include="File\Office\Dso\DsoFile.cs" />
     <Compile Include="File\Office\OfficeFileProperties.cs" />
