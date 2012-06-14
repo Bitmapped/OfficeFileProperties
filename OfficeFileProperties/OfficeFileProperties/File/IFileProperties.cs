@@ -5,11 +5,15 @@ using System.Text;
 
 namespace OfficeFileProperties.File
 {
+    public enum FileTypeEnum { MicrosoftWord, MicrosoftExcel, MicrosoftAccess, MicrosoftPowerPoint, OtherType, UnknownType };
+
     /// <summary>
     /// Properties specific to all files.
     /// </summary>
     public interface IFileProperties
     {
+        FileTypeEnum FileType { get; }
+
         DateTime CreatedTimeLocal { get; }
         DateTime CreatedTimeUtc { get; }
         DateTime ModifiedTimeLocal { get; }

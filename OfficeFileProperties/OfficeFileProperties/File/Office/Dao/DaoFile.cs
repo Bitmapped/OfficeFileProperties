@@ -124,7 +124,7 @@ namespace OfficeFileProperties.File.Office.Dao
             this.fileProperties.filename = this.filename;
 
             // filetype
-            this.fileProperties.fileType = OfficeFileProperties.FileTypeEnum.MicrosoftAccess;
+            this.fileProperties.fileType = FileTypeEnum.MicrosoftAccess;
             
             // createdTimeUtc
             // Try getting actual time, first through SummaryInfo.

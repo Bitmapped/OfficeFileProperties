@@ -122,7 +122,7 @@ namespace OfficeFileProperties.File.Office.OpenXml
             this.fileProperties.filename = this.filename;
 
             // filetype
-            this.fileProperties.fileType = OfficeFileProperties.FileTypeEnum.MicrosoftPowerPoint;
+            this.fileProperties.fileType = FileTypeEnum.MicrosoftPowerPoint;
             
             // createdTimeUtc
             try

@@ -6,7 +6,7 @@ using System.IO;
 
 namespace OfficeFileProperties.File
 {
-    class File: IFile
+    public class File: IFile
     {
         // Define private variables.
         private string filename;
@@ -71,8 +71,8 @@ namespace OfficeFileProperties.File
         /// </summary>
         /// <param name="filename">Filename to load.</param>
         /// <param name="multifileMode">If true, reuse file connection objects.</param>
-        public File(string filename, bool multifilemode)
-            : this(multifilemode)
+        public File(string filename, bool multifileMode = false)
+            : this(multifileMode)
         {
             this.LoadFile(filename);
         }

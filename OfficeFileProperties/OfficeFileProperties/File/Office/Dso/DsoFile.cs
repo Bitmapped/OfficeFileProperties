@@ -123,19 +123,19 @@ namespace OfficeFileProperties.File.Office.Dso
             switch (fileInfo.Extension)
             {
                 case ".xls":
-                    this.fileProperties.fileType = OfficeFileProperties.FileTypeEnum.MicrosoftExcel;
+                    this.fileProperties.fileType = FileTypeEnum.MicrosoftExcel;
                     break;
 
                 case ".pptx":
-                    this.fileProperties.fileType = OfficeFileProperties.FileTypeEnum.MicrosoftPowerPoint;
+                    this.fileProperties.fileType = FileTypeEnum.MicrosoftPowerPoint;
                     break;
 
                 case ".docx":
-                    this.fileProperties.fileType = OfficeFileProperties.FileTypeEnum.MicrosoftWord;
+                    this.fileProperties.fileType = FileTypeEnum.MicrosoftWord;
                     break;
 
                 default:
-                    this.fileProperties.fileType = OfficeFileProperties.FileTypeEnum.OtherType;
+                    this.fileProperties.fileType = FileTypeEnum.OtherType;
                     break;
             }
 
