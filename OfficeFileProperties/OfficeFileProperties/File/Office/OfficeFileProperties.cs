@@ -90,5 +90,37 @@ namespace OfficeFileProperties.File.Office
                 return this.customProperties;
             }
         }
+
+        /// <summary>
+        /// Serialize custom properties as a string.
+        /// </summary>
+        public string CustomPropertiesString
+        {
+            get
+            {
+                // Check that file has been loaded.
+                if (!this.fileLoaded)
+                {
+                    throw new InvalidOperationException("No file has been loaded.");
+                }
+
+                // Generate string.
+                var propertyString = String.Empty;
+
+                foreach (var cp in this.customProperties)
+                {
+                    // Insert break if needed.
+                    if (propertyString != String.Empty)
+                    {
+                        propertyString += " ||| ";
+                    }
+
+                    // Add new item onto string.
+                    propertyString += cp.Key + " ::: " + cp.Value;
+                }
+
+                return propertyString;
+            }
+        }
     }
 }

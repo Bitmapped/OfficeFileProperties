@@ -14,5 +14,7 @@ namespace OfficeFileProperties.File.Office
         string Author { get; }
         string Company { get; }
         string Title { get; }
+        SortedList<string, string> CustomProperties { get; }
+        string CustomPropertiesString { get; }
     }
 }
