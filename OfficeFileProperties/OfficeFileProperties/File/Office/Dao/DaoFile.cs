@@ -12,12 +12,13 @@ namespace OfficeFileProperties.File.Office.Dao
     /// <summary>
     /// Obtain properties of Microsoft Access databases.
     /// </summary>
-    class DaoFile : IFile
+    class DaoFile : IFile, IDisposable
     {
         // Define private variables.
         private string filename;
         private AccessDao.Database file;
         private OfficeFileProperties fileProperties;
+        private bool disposed = false;
 
         // Instantiate shared Access Dao database objects.
         private AccessDao.DBEngine dbEngine;
@@ -238,8 +239,8 @@ namespace OfficeFileProperties.File.Office.Dao
                     }
                     catch (COMException ce)
                     {
-                        // If error code 0x800A0D1E, known error - throw away.
-                        if ((uint)ce.ErrorCode == 0x800A0D1E)
+                        // If error code 0x800A0D1E or 0x800a0cc1, known missing database components.  Throw away.
+                        if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800a0cc1))
                         {
                             // Do nothing.
                         }
@@ -253,8 +254,8 @@ namespace OfficeFileProperties.File.Office.Dao
             }
             catch (COMException ce)
             {
-                // If error code 0x800A0D1E, known error - throw away.
-                if ((uint)ce.ErrorCode == 0x800A0D1E)
+                // If error code 0x800A0D1E or 0x800a0cc1, known missing database components.  Throw away.
+                if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800a0cc1))
                 {
                     // Do nothing.
                 }
@@ -269,5 +270,37 @@ namespace OfficeFileProperties.File.Office.Dao
             this.fileProperties.fileLoaded = true;
         }
 
+        /// <summary>
+        /// Dispose of file access.
+        /// </summary>
+        /// <param name="disposing">If connection should be disposed.</param>
+        protected void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // Close file if not already done.
+                    if (this.file != null)
+                    {
+                        // Close file.
+                        this.CloseFile();
+                    }
+
+                    // Set context handlers to null.
+                    this.dbEngine = null;
+                    this.dbWorkspace = null;
+                }
+            }
+            this.disposed = true;
+        }
+
+        /// <summary>
+        /// Dispose of file access.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
     }
 }
