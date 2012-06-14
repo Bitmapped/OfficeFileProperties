@@ -126,11 +126,11 @@ namespace OfficeFileProperties.File.Office.Dso
                     this.fileProperties.fileType = FileTypeEnum.MicrosoftExcel;
                     break;
 
-                case ".pptx":
+                case ".ppt":
                     this.fileProperties.fileType = FileTypeEnum.MicrosoftPowerPoint;
                     break;
 
-                case ".docx":
+                case ".doc":
                     this.fileProperties.fileType = FileTypeEnum.MicrosoftWord;
                     break;
 
