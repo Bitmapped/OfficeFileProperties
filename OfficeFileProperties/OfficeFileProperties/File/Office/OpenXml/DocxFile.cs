@@ -156,7 +156,7 @@ namespace OfficeFileProperties.File.Office.OpenXml
             this.fileProperties.company = this.file.ExtendedFilePropertiesPart.Properties.Company.InnerText;
 
             // Load custom properties.
-            if (this.file.CustomFilePropertiesPart.Properties != null)
+            if (this.file.CustomFilePropertiesPart != null)
             {
                 // Use Linq to get listing of properties.
                 var customProperties = this.file.CustomFilePropertiesPart.Properties
