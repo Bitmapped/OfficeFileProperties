@@ -152,7 +152,7 @@ namespace OfficeFileProperties.File.Office.OpenXml
             this.fileProperties.title = this.file.PackageProperties.Title;
 
             // company
-            this.fileProperties.company = this.file.ExtendedFilePropertiesPart.Properties.Company.InnerText;
+            this.fileProperties.company = (this.file.ExtendedFilePropertiesPart.Properties.Company != null) ? this.file.ExtendedFilePropertiesPart.Properties.Company.InnerText : null;
 
             // Load custom properties.
             if (this.file.CustomFilePropertiesPart != null)
