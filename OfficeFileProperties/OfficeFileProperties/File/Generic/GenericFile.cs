@@ -48,10 +48,11 @@ namespace OfficeFileProperties.File.Generic
         /// Constructor, also loads specified file.
         /// </summary>
         /// <param name="filename">File to load.</param>
-        public GenericFile(string filename) : this()
+        /// <param name="fileType">FileType to mark for the file.</param>
+        public GenericFile(string filename, FileTypeEnum fileType = FileTypeEnum.OtherType) : this()
         {
             // Load specified file.
-            this.LoadFile(filename);
+            this.LoadFile(filename, fileType);
         }
 
         /// <summary>
@@ -79,6 +80,15 @@ namespace OfficeFileProperties.File.Generic
         /// <param name="filename"></param>
         public void LoadFile(string filename)
         {
+            LoadFile(filename, FileTypeEnum.OtherType);
+        }
+        /// <summary>
+        /// Loads requested file, saves its properties.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="fileType">FileType to mark for the file.
+        public void LoadFile(string filename, FileTypeEnum fileType)
+        {
             // Clear loaded properties.
             ClearProperties();
 
@@ -90,6 +100,9 @@ namespace OfficeFileProperties.File.Generic
 
             // Loads file properties.
             LoadProperties();
+
+            // Mark file type.
+            this.fileProperties.fileType = fileType;
 
             // Since file cannot be written to, close it immediately.
             CloseFile();
