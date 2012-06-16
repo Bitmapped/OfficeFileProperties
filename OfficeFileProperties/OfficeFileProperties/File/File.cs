@@ -161,7 +161,7 @@ namespace OfficeFileProperties.File
                 catch (Exception)
                 {
                     // Use generic tool because of exception.
-                    genericFile.LoadFile(filename);
+                    genericFile.LoadFile(filename, FileTypeEnum.UnknownType);
                     this.fileProperties = genericFile.FileProperties;
                 }
             }
@@ -212,7 +212,7 @@ namespace OfficeFileProperties.File
                 catch (Exception)
                 {
                     // Use generic file.
-                    this.file = new Generic.GenericFile(filename);
+                    this.file = new Generic.GenericFile(filename, FileTypeEnum.UnknownType);
                 }
 
                 // Store file properties.
