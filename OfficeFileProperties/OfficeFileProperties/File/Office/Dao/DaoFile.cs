@@ -131,116 +131,107 @@ namespace OfficeFileProperties.File.Office.Dao
             // filetype
             this.fileProperties.fileType = FileTypeEnum.MicrosoftAccess;
 
-            // createdTimeUtc
-            // Try getting actual time, first through SummaryInfo.
+            // Load properties.
+            AccessDao.Document summaryInfo = null, userDefined = null;
             try
             {
-                // Check to see if property exists.
-                if (this.file.Containers["Databases"] != null && this.file.Containers["Databases"].Documents["SummaryInfo"] != null && this.file.Containers["Databases"].Documents["SummaryInfo"].Properties["DateCreated"] != null)
+                // Extract documents in which we have interest.  Note most recent updated time.
+                this.fileProperties.modifiedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                DateTime updatedTime;
+                DateTime? mSysDbTime = null;
+                foreach (AccessDao.Document document in this.file.Containers["Databases"].Documents)
                 {
-                    // Property exists.
-                    this.fileProperties.createdTimeUtc = DateTime.Parse(this.file.Containers["Databases"].Documents["SummaryInfo"].Properties["DateCreated"].Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
-                }
-                else
-                {
-                    // Try alternate location.
-                    if (this.file.Containers["Databases"] != null && this.file.Containers["Databases"] != null && this.file.Containers["Databases"].Properties["DateCreated"] != null)
+                    switch (document.Name)
                     {
-                        this.fileProperties.createdTimeUtc = DateTime.Parse(this.file.Containers["Databases"].Properties["DateCreated"].Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
-                    }
-                    else
-                    {
-                        // Give generic DateTime.
-                        this.fileProperties.createdTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                    }
-                }
-            }
-            catch
-            {
-                // Give generic DateTime.
-                this.fileProperties.createdTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            }
+                        case "SummaryInfo":
+                            summaryInfo = document;
+                            break;
 
-            // modifiedTimeUtc
-            // Try getting actual time.  Start with earlier-possible value and move forward.
-            this.fileProperties.modifiedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                        case "UserDefined":
+                            userDefined = document;
+                            break;
 
-            // Loop through all document items to find newer time.
-            DateTime updatedTime;
-            try
-            {
-                if (this.file.Containers != null)
-                {
-                    foreach (AccessDao.Container container in this.file.Containers)
+                        default:
+                            break;
+                    }
+
+                    // Compare edit times.
+                    foreach (AccessDao.Property property in document.Properties)
                     {
-                        if (container.Documents != null)
+                        // Look for name of LastUpdated.
+                        if (property.Name == "LastUpdated")
                         {
-                            foreach (AccessDao.Document document in container.Documents)
-                            {
-                                if (document.Properties["LastUpdated"] != null)
-                                {
-                                    // Get time of object.
-                                    updatedTime = DateTime.Parse(document.Properties["LastUpdated"].Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
+                            // Get time of object.
+                            updatedTime = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
 
-                                    // Compare time to already-saved time.
-                                    if (updatedTime > this.fileProperties.modifiedTimeUtc)
-                                    {
-                                        // New time is more recent.  Save it.
-                                        this.fileProperties.modifiedTimeUtc = updatedTime;
-                                    }
-                                }
+                            // Compare time to already-saved time.
+                            if (updatedTime > this.fileProperties.modifiedTimeUtc)
+                            {
+                                // New time is more recent.  Save it.
+                                this.fileProperties.modifiedTimeUtc = updatedTime;
                             }
+                        }
+                        else
+                        {
+                            // Set aside mSysDb.DateCreated for potential later use if it exists.
+                            if ((document.Name == "MSysDb") && (property.Name == "DateCreated"))
+                            {
+                                mSysDbTime = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
+                            }
+
                         }
                     }
                 }
-            }
-            catch { }
 
-            // author
-            // Try obtaining, returning null if not available.
-            try
-            {
-                if (this.file.Containers["Databases"] != null && this.file.Containers["Databases"].Documents["SummaryInfo"] != null && this.file.Containers["Databases"].Documents["SummaryInfo"].Properties["Author"] != null)
+                // Process properties from summaryInfo.
+                if (summaryInfo != null)
                 {
-                    this.fileProperties.author = this.file.Containers["Databases"].Documents["SummaryInfo"].Properties["Author"].Value.ToString();
-                }
-            }
-            catch
-            { }
-
-            // title
-            // Try obtaining, returning null if not available.
-            try
-            {
-                if (this.file.Containers["Databases"] != null && this.file.Containers["Databases"].Documents["SummaryInfo"] != null && this.file.Containers["Databases"].Documents["SummaryInfo"].Properties["Title"] != null)
-                {
-                    this.fileProperties.title = this.file.Containers["Databases"].Documents["SummaryInfo"].Properties["Title"].Value.ToString();
-                }
-            }
-            catch
-            { }
-
-            // company
-            // Try obtaining, returning null if not available.
-            try
-            {
-                if (this.file.Containers["Databases"] != null && this.file.Containers["Databases"].Documents["SummaryInfo"] != null && this.file.Containers["Databases"].Documents["SummaryInfo"].Properties["Company"] != null)
-                {
-                    this.fileProperties.company = this.file.Containers["Databases"].Documents["SummaryInfo"].Properties["Company"].Value.ToString();
-                }
-            }
-            catch
-            { }
-
-            // Load custom properties.
-            // Try obtaining.
-            try
-            {
-                if (this.file.Containers["Databases"] != null && this.file.Containers["Databases"].Documents["UserDefined"] != null && this.file.Containers["Databases"].Documents["UserDefined"].Properties != null)
-                {
-                    foreach (AccessDao.Property cp in this.file.Containers["Databases"].Documents["UserDefined"].Properties)
+                    foreach (AccessDao.Property property in summaryInfo.Properties)
                     {
-                        switch (cp.Name)
+                        switch (property.Name)
+                        {
+                            case "DateCreated":
+                                this.fileProperties.createdTimeUtc = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
+                                break;
+
+                            case "Author":
+                                this.fileProperties.author = property.Value.ToString();
+                                break;
+
+                            case "Title":
+                                this.fileProperties.title = property.Value.ToString();
+                                break;
+
+                            case "Company":
+                                this.fileProperties.company = property.Value.ToString();
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                // If summaryInfo didn't provide created time, try getting from mSysDb.
+                if (this.fileProperties.createdTimeUtc == null)
+                {
+                    if (mSysDbTime != null)
+                    {
+                        this.fileProperties.createdTimeUtc = (DateTime)mSysDbTime;
+                    }
+                    else
+                    {
+                        // Use generic date of 1/1/0001.
+                        this.fileProperties.createdTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                    }
+                }
+
+                // Process user-defined properties.
+                if (userDefined != null)
+                {
+                    foreach (AccessDao.Property property in userDefined.Properties)
+                    {
+                        switch (property.Name)
                         {
                             case "Name":
                             case "Owner":
@@ -251,27 +242,30 @@ namespace OfficeFileProperties.File.Office.Dao
                                 // Default properties.  Do nothing.
                                 break;
 
+                            case "Permissions":
+                            case "AllPermissions":
+                                // Can't handle this property.  Do nothing.
+                                break;
+
                             default:
                                 // Record property.
-                                this.fileProperties.customProperties.Add(cp.Name.ToString(), cp.Value.ToString());
+                                this.fileProperties.customProperties.Add(property.Name.ToString(), property.Value.ToString());
                                 break;
                         }
                     }
                 }
+
             }
-            catch (COMException ce)
+            catch (Exception e)
             {
-                // If error code 0x800A0D1E or 0x800a0cc1, known missing database components.  Throw away.
-                if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800a0cc1))
-                {
-                    // Do nothing.
-                }
-                else
-                {
-                    // Rethrow the exception.
-                    throw ce;
-                }
+                throw e;
             }
+
+ 
+
+            
+
+            
 
             // Mark properties as loaded.
             this.fileProperties.fileLoaded = true;
