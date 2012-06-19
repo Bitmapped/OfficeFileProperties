@@ -158,27 +158,42 @@ namespace OfficeFileProperties.File.Office.Dao
                     // Compare edit times.
                     foreach (AccessDao.Property property in document.Properties)
                     {
-                        // Look for name of LastUpdated.
-                        if (property.Name == "LastUpdated")
+                        try
                         {
-                            // Get time of object.
-                            updatedTime = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
-
-                            // Compare time to already-saved time.
-                            if (updatedTime > this.fileProperties.modifiedTimeUtc)
+                            // Look for name of LastUpdated.
+                            if (property.Name == "LastUpdated")
                             {
-                                // New time is more recent.  Save it.
-                                this.fileProperties.modifiedTimeUtc = updatedTime;
+                                // Get time of object.
+                                updatedTime = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
+
+                                // Compare time to already-saved time.
+                                if (updatedTime > this.fileProperties.modifiedTimeUtc)
+                                {
+                                    // New time is more recent.  Save it.
+                                    this.fileProperties.modifiedTimeUtc = updatedTime;
+                                }
+                            }
+                            else
+                            {
+                                // Set aside mSysDb.DateCreated for potential later use if it exists.
+                                if ((document.Name == "MSysDb") && (property.Name == "DateCreated"))
+                                {
+                                    mSysDbTime = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
+                                }
                             }
                         }
-                        else
+                        catch (COMException ce)
                         {
-                            // Set aside mSysDb.DateCreated for potential later use if it exists.
-                            if ((document.Name == "MSysDb") && (property.Name == "DateCreated"))
+                            // If conversion problem, throw away exception.
+                            if ((uint)ce.ErrorCode == 0x800A0D1E)
                             {
-                                mSysDbTime = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
+                                // Do nothing.
                             }
-
+                            else
+                            {
+                                // Rethrow the exception.
+                                throw ce;
+                            }
                         }
                     }
                 }
@@ -188,26 +203,42 @@ namespace OfficeFileProperties.File.Office.Dao
                 {
                     foreach (AccessDao.Property property in summaryInfo.Properties)
                     {
-                        switch (property.Name)
+                        try
                         {
-                            case "DateCreated":
-                                this.fileProperties.createdTimeUtc = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
-                                break;
+                            switch (property.Name)
+                            {
+                                case "DateCreated":
+                                    this.fileProperties.createdTimeUtc = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
+                                    break;
 
-                            case "Author":
-                                this.fileProperties.author = property.Value.ToString();
-                                break;
+                                case "Author":
+                                    this.fileProperties.author = property.Value.ToString();
+                                    break;
 
-                            case "Title":
-                                this.fileProperties.title = property.Value.ToString();
-                                break;
+                                case "Title":
+                                    this.fileProperties.title = property.Value.ToString();
+                                    break;
 
-                            case "Company":
-                                this.fileProperties.company = property.Value.ToString();
-                                break;
+                                case "Company":
+                                    this.fileProperties.company = property.Value.ToString();
+                                    break;
 
-                            default:
-                                break;
+                                default:
+                                    break;
+                            }
+                        }
+                        catch (COMException ce)
+                        {
+                            // If conversion problem, throw away exception.
+                            if ((uint)ce.ErrorCode == 0x800A0D1E)
+                            {
+                                // Do nothing.
+                            }
+                            else
+                            {
+                                // Rethrow the exception.
+                                throw ce;
+                            }
                         }
                     }
                 }
@@ -231,26 +262,42 @@ namespace OfficeFileProperties.File.Office.Dao
                 {
                     foreach (AccessDao.Property property in userDefined.Properties)
                     {
-                        switch (property.Name)
+                        try
                         {
-                            case "Name":
-                            case "Owner":
-                            case "UserName":
-                            case "Container":
-                            case "DateCreated":
-                            case "LastUpdated":
-                                // Default properties.  Do nothing.
-                                break;
+                            switch (property.Name)
+                            {
+                                case "Name":
+                                case "Owner":
+                                case "UserName":
+                                case "Container":
+                                case "DateCreated":
+                                case "LastUpdated":
+                                    // Default properties.  Do nothing.
+                                    break;
 
-                            case "Permissions":
-                            case "AllPermissions":
-                                // Can't handle this property.  Do nothing.
-                                break;
+                                case "Permissions":
+                                case "AllPermissions":
+                                    // Can't handle this property.  Do nothing.
+                                    break;
 
-                            default:
-                                // Record property.
-                                this.fileProperties.customProperties.Add(property.Name.ToString(), property.Value.ToString());
-                                break;
+                                default:
+                                    // Record property.
+                                    this.fileProperties.customProperties.Add(property.Name.ToString(), property.Value.ToString());
+                                    break;
+                            }
+                        }
+                        catch (COMException ce)
+                        {
+                            // If conversion problem, throw away exception.
+                            if ((uint)ce.ErrorCode == 0x800A0D1E)
+                            {
+                                // Do nothing.
+                            }
+                            else
+                            {
+                                // Rethrow the exception.
+                                throw ce;
+                            }
                         }
                     }
                 }

@@ -18,6 +18,16 @@ namespace OfficeFileProperties.File
         internal FileTypeEnum fileType = FileTypeEnum.UnknownType;
 
         /// <summary>
+        /// Constructor
+        /// </summary>
+        public FileProperties()
+        {
+            // Set default times for DateTime objects.
+            this.createdTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            this.modifiedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        }
+
+        /// <summary>
         /// Access file type.
         /// </summary>
         public FileTypeEnum FileType
