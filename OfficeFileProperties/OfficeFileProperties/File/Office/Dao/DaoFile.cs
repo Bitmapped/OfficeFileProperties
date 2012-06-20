@@ -136,7 +136,6 @@ namespace OfficeFileProperties.File.Office.Dao
             try
             {
                 // Extract documents in which we have interest.  Note most recent updated time.
-                this.fileProperties.modifiedTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 DateTime updatedTime;
                 DateTime? mSysDbTime = null;
                 foreach (AccessDao.Document document in this.file.Containers["Databases"].Documents)
@@ -167,7 +166,7 @@ namespace OfficeFileProperties.File.Office.Dao
                                 updatedTime = DateTime.Parse(property.Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
 
                                 // Compare time to already-saved time.
-                                if (updatedTime > this.fileProperties.modifiedTimeUtc)
+                                if ((this.fileProperties.modifiedTimeUtc == null) || (updatedTime > this.fileProperties.modifiedTimeUtc))
                                 {
                                     // New time is more recent.  Save it.
                                     this.fileProperties.modifiedTimeUtc = updatedTime;
@@ -249,11 +248,6 @@ namespace OfficeFileProperties.File.Office.Dao
                     if (mSysDbTime != null)
                     {
                         this.fileProperties.createdTimeUtc = (DateTime)mSysDbTime;
-                    }
-                    else
-                    {
-                        // Use generic date of 1/1/0001.
-                        this.fileProperties.createdTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                     }
                 }
 
