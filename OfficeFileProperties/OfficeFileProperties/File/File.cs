@@ -116,7 +116,7 @@ namespace OfficeFileProperties.File
                 {
                     // In multifile mode.
                     // Switch depending on file extension.
-                    switch (fileInfo.Extension)
+                    switch (fileInfo.Extension.ToLower())
                     {
                         case ".accdb":
                         case ".mdb":
@@ -173,7 +173,7 @@ namespace OfficeFileProperties.File
                 try
                 {
                     // Switch depending on file extension.
-                    switch (fileInfo.Extension)
+                    switch (fileInfo.Extension.ToLower())
                     {
                         case ".accdb":
                         case ".mdb":
