@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("OfficeFileProperties")]
-[assembly: AssemblyDescription("Assembly for reading and editing Office file properties.")]
+[assembly: AssemblyDescription("Assembly for reading and editing Office file properties. Also requires Microsoft Office Interop classes be installed on machine.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("OfficeFileProperties")]
+[assembly: AssemblyCompany("Brian M. Powell")]
 [assembly: AssemblyProduct("OfficeFileProperties")]
 [assembly: AssemblyCopyright("Copyright ©2012, Brian M. Powell.")]
 [assembly: AssemblyTrademark("")]

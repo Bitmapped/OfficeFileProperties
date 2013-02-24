@@ -81,6 +81,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="OfficeFileProperties.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
