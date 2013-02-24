@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://officefileproperties.codeplex.com/license</licenseUrl>
+    <projectUrl>http://officefileproperties.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Initial NuGet Release</releaseNotes>
+    <copyright>Copyright 2013, $author$</copyright>
+    <tags>Office Word Excel PowerPoint Access DOCX XLSX PPTX ACCDB DOC XLS PPT MDB DSOFile Properties</tags>
+  </metadata>
+</package>
