@@ -1,7 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeFileProperties", "OfficeFileProperties\OfficeFileProperties.csproj", "{E0851A95-9FB5-4C6A-8C02-5F356A15A952}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{443DDFA1-0529-42C4-93DC-39A418E316AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DSOFIle", "DSOFIle", "{9887F9BB-E912-4BE6-9B84-72B9418BAA5E}"
+	ProjectSection(SolutionItems) = preProject
+		Libraries\DSOFile\dsofile.dll = Libraries\DSOFile\dsofile.dll
+		Libraries\DSOFile\Interop.Dsofile.dll = Libraries\DSOFile\Interop.Dsofile.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -25,5 +35,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9887F9BB-E912-4BE6-9B84-72B9418BAA5E} = {443DDFA1-0529-42C4-93DC-39A418E316AC}
 	EndGlobalSection
 EndGlobal
