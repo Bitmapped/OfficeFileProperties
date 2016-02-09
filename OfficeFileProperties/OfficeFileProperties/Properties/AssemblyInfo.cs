@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Brian M. Powell")]
 [assembly: AssemblyProduct("OfficeFileProperties")]
-[assembly: AssemblyCopyright("Copyright ©2013, Brian M. Powell.")]
+[assembly: AssemblyCopyright("Copyright ©2016, Brian M. Powell.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
