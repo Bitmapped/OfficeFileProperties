@@ -1,2 +1,6 @@
 /OfficeFileProperties/packages
 /OfficeFileProperties/OfficeFileProperties/obj
+packages
+.vs
+obj
+bin
