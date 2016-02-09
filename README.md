@@ -11,5 +11,7 @@ For Word, Excel, and PowerPoint, this class manipulates file properties directly
 
 ## System Requirements
 1. Microsoft .NET Framework 4
-2. DSOFile 2.1 for reading Office 97-2003 files - http://www.microsoft.com/en-us/download/details.aspx?id=8422
-3. Microsoft Office 2010 Primary Interop Assemblies for reading Access databases - http://www.microsoft.com/en-us/download/details.aspx?id=3508
+
+### Included DLLs
+1. DSOFile 2.1 for reading Office 97-2003 files - http://www.microsoft.com/en-us/download/details.aspx?id=8422
+2. Microsoft Office 2013 Primary Interop Assemblies for reading Access databases
