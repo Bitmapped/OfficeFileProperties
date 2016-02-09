@@ -1,4 +1,4 @@
-Home / Licenses
+# License
 GNU Lesser General Public License v3.0
 
                    GNU LESSER GENERAL PUBLIC LICENSE
