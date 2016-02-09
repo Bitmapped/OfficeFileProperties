@@ -14,8 +14,8 @@ For Word, Excel, and PowerPoint, this class manipulates file properties directly
 
 ### Included DLLs
 1. DSOFile 2.1 for reading Office 97-2003 files - [Microsoft website](http://www.microsoft.com/en-us/download/details.aspx?id=8422)
-2. Microsoft Office 2013 Primary Interop Assemblies for reading Access databases
-3. 
+2. Microsoft Office 2013 Primary Interop Assemblies for reading Access databases - [Office 2010 version](http://www.microsoft.com/en-us/download/details.aspx?id=3508)
+
 ## NuGet availability
 This project is available on [NuGet](https://www.nuget.org/packages/OfficeFileProperties/).
 
