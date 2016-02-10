@@ -15,7 +15,7 @@ namespace OfficeFileProperties.File
         internal string filename;
         internal bool fileLoaded;
         internal DateTime createdTimeUtc, modifiedTimeUtc;
-        internal FileTypeEnum fileType = FileTypeEnum.UnknownType;
+        internal FileTypeEnum fileType = FileTypeEnum.Unknown;
 
         /// <summary>
         /// Access file type.
@@ -27,6 +27,8 @@ namespace OfficeFileProperties.File
                 return this.fileType;
             }
         }
+
+        
 
         /// <summary>
         /// Filename
