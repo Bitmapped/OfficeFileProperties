@@ -55,11 +55,11 @@
     </Reference>
     <Reference Include="Interop.Dsofile">
       <HintPath>..\Libraries\DSOFile\Interop.Dsofile.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Access.Dao, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\Libraries\Office\Microsoft.Office.Interop.Access.Dao.dll</HintPath>
     </Reference>
     <Reference Include="System" />
