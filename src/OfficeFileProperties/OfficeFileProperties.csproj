@@ -87,21 +87,6 @@
     <Compile Include="FileAccessors\OpenXml\DocxFile.cs" />
     <Compile Include="FileProperties.cs" />
     <Compile Include="FileTypeEnum.cs" />
-    <Compile Include="File\File.cs" />
-    <Compile Include="File\FileProperties.cs" />
-    <Compile Include="File\Generic\GenericFile.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="File\Generic\GenericFileProperties.cs" />
-    <Compile Include="File\IFile.cs" />
-    <Compile Include="File\IFileProperties.cs" />
-    <Compile Include="File\Office\Dao\DaoFile.cs" />
-    <Compile Include="File\Office\Dso\DsoFile.cs" />
-    <Compile Include="File\Office\OfficeFileProperties.cs" />
-    <Compile Include="File\Office\IOfficeFileProperties.cs" />
-    <Compile Include="File\Office\OpenXml\PptxFile.cs" />
-    <Compile Include="File\Office\OpenXml\XlsxFile.cs" />
-    <Compile Include="File\Office\OpenXml\DocxFile.cs" />
     <Compile Include="OfficeFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\DictionarySupport.cs" />
