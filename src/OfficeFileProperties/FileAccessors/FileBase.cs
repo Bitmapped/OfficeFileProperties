@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace OfficeFileProperties.FileAccessors
 {
-    public abstract class FileBase<T>
+    /// <summary>
+    /// Abstract class for directly manipulating files.
+    /// </summary>
+    /// <typeparam name="T">Type of object for accessing files.</typeparam>
+    public abstract class FileBase<T> : IFileBase
     {
         #region Fields
 
@@ -72,15 +76,15 @@ namespace OfficeFileProperties.FileAccessors
         }
 
         /// <summary>
-        /// Created Date in local time
+        /// Created Time in local time
         /// </summary>
-        public virtual DateTime? CreatedDateLocal
+        public virtual DateTime? CreatedTimeLocal
         {
             get
             {
-                if (CreatedDateUtc.HasValue)
+                if (CreatedTimeUtc.HasValue)
                 {
-                    return CreatedDateUtc.Value.ToLocalTime();
+                    return CreatedTimeUtc.Value.ToLocalTime();
                 }
                 else
                 {
@@ -91,19 +95,19 @@ namespace OfficeFileProperties.FileAccessors
             {
                 if (value.HasValue)
                 {
-                    CreatedDateUtc = value.Value.ToUniversalTime();
+                    CreatedTimeUtc = value.Value.ToUniversalTime();
                 }
                 else
                 {
-                    CreatedDateUtc = null;
+                    CreatedTimeUtc = null;
                 }
             }
         }
 
         /// <summary>
-        /// Created date in UTC time
+        /// Created Time in UTC time
         /// </summary>
-        public virtual DateTime? CreatedDateUtc
+        public virtual DateTime? CreatedTimeUtc
         {
             get
             {
@@ -119,7 +123,7 @@ namespace OfficeFileProperties.FileAccessors
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public virtual Dictionary<string, string> CustomProperties
+        public virtual IDictionary<string, string> CustomProperties
         {
             get
             {
@@ -141,7 +145,12 @@ namespace OfficeFileProperties.FileAccessors
         /// <summary>
         /// Accessor for underlying file object
         /// </summary>
-        public T FileAccessor { get; protected set; }
+        public T File { get; protected set; }
+
+        /// <summary>
+        /// Indicator if the file is currently open. Value used for internal tracking.
+        /// </summary>
+        private bool _isOpen = false;
 
         /// <summary>
         /// Filename
@@ -162,18 +171,29 @@ namespace OfficeFileProperties.FileAccessors
         /// <summary>
         /// Indicator if the file is currently open
         /// </summary>
-        public bool IsOpen { get; protected set; }
-
-        /// <summary>
-        /// Modified Date in local time
-        /// </summary>
-        public virtual DateTime? ModifiedDateLocal
+        public bool IsOpen
         {
             get
             {
-                if (ModifiedDateUtc.HasValue)
+                // Ensure _isOpen is true and file accessor is not null.
+                return (this._isOpen && (this.File != null));
+            }
+            protected set
+            {
+                this._isOpen = value;
+            }
+        }
+
+        /// <summary>
+        /// Modified Time in local time
+        /// </summary>
+        public virtual DateTime? ModifiedTimeLocal
+        {
+            get
+            {
+                if (ModifiedTimeUtc.HasValue)
                 {
-                    return ModifiedDateUtc.Value.ToLocalTime();
+                    return ModifiedTimeUtc.Value.ToLocalTime();
                 }
                 else
                 {
@@ -184,19 +204,19 @@ namespace OfficeFileProperties.FileAccessors
             {
                 if (value.HasValue)
                 {
-                    ModifiedDateUtc = value.Value.ToUniversalTime();
+                    ModifiedTimeUtc = value.Value.ToUniversalTime();
                 }
                 else
                 {
-                    ModifiedDateUtc = null;
-                }                
+                    ModifiedTimeUtc = null;
+                }
             }
         }
 
         /// <summary>
-        /// Modified Date in UTC time
+        /// Modified Time in UTC time
         /// </summary>
-        public virtual DateTime? ModifiedDateUtc
+        public virtual DateTime? ModifiedTimeUtc
         {
             get
             {
@@ -251,9 +271,9 @@ namespace OfficeFileProperties.FileAccessors
             // Store properties.
             properties.Author = this.Author;
             properties.Company = this.Company;
-            properties.CreatedDateUtc = this.CreatedDateUtc;
+            properties.CreatedTimeUtc = this.CreatedTimeUtc;
             properties.CustomProperties = this.CustomProperties;
-            properties.ModifiedDateUtc = this.ModifiedDateUtc;
+            properties.ModifiedTimeUtc = this.ModifiedTimeUtc;
             properties.Title = this.Title;
 
             // Close file.

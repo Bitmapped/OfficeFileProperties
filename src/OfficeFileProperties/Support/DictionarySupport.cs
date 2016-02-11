@@ -8,7 +8,7 @@ namespace OfficeFileProperties.Support
 {
     static public class DictionarySupport
     {
-        static public string Serialize(this Dictionary<string, string> dictionary)
+        static public string Serialize(this IDictionary<string, string> dictionary)
         {
             // Generate string.
             var propertyString = String.Empty;

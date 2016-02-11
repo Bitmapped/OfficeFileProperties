@@ -20,15 +20,15 @@ namespace OfficeFileProperties
         public string Company { get; internal set; }
 
         /// <summary>
-        /// Created Date in local time
+        /// Created Time in local time
         /// </summary>
-        public DateTime? CreatedDateLocal
+        public DateTime? CreatedTimeLocal
         {
             get
             {
-                if (CreatedDateUtc.HasValue)
+                if (CreatedTimeUtc.HasValue)
                 {
-                    return CreatedDateUtc.Value.ToLocalTime();
+                    return CreatedTimeUtc.Value.ToLocalTime();
                 }
                 else
                 {
@@ -39,24 +39,24 @@ namespace OfficeFileProperties
             {
                 if (value.HasValue)
                 {
-                    CreatedDateUtc = value.Value.ToUniversalTime();
+                    CreatedTimeUtc = value.Value.ToUniversalTime();
                 }
                 else
                 {
-                    CreatedDateUtc = null;
+                    CreatedTimeUtc = null;
                 }
             }
         }
 
         /// <summary>
-        /// Created Date in UTC time
+        /// Created Time in UTC time
         /// </summary>
-        public DateTime? CreatedDateUtc { get; internal set; }
+        public DateTime? CreatedTimeUtc { get; internal set; }
 
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public Dictionary<string, string> CustomProperties { get; internal set; }
+        public IDictionary<string, string> CustomProperties { get; internal set; }
 
         /// <summary>
         /// Serialize Custom Properties as a string.
@@ -87,15 +87,15 @@ namespace OfficeFileProperties
         public FileTypeEnum FileType { get; internal set; }
 
         /// <summary>
-        /// Modified Date in local time
+        /// Modified Time in local time
         /// </summary>
-        public DateTime? ModifiedDateLocal
+        public DateTime? ModifiedTimeLocal
         {
             get
             {
-                if (ModifiedDateUtc.HasValue)
+                if (ModifiedTimeUtc.HasValue)
                 {
-                    return ModifiedDateUtc.Value.ToLocalTime();
+                    return ModifiedTimeUtc.Value.ToLocalTime();
                 }
                 else
                 {
@@ -106,19 +106,19 @@ namespace OfficeFileProperties
             {
                 if (value.HasValue)
                 {
-                    ModifiedDateUtc = value.Value.ToUniversalTime();
+                    ModifiedTimeUtc = value.Value.ToUniversalTime();
                 }
                 else
                 {
-                    ModifiedDateUtc = null;
+                    ModifiedTimeUtc = null;
                 }
             }
         }
 
         /// <summary>
-        /// Modified Date in UTC time
+        /// Modified Time in UTC time
         /// </summary>
-        public DateTime? ModifiedDateUtc { get; internal set; }
+        public DateTime? ModifiedTimeUtc { get; internal set; }
 
         /// <summary>
         /// Title

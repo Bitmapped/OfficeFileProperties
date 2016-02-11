@@ -44,7 +44,7 @@ namespace OfficeFileProperties.FileAccessors.Generic
             this.IsOpen = false;
 
             // Clear file object.
-            this.FileAccessor = null;
+            this.File = null;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace OfficeFileProperties.FileAccessors.Generic
         public override void OpenFile()
         {
             // Open file.
-            this.FileAccessor = new FileInfo(this.Filename);
+            this.File = new FileInfo(this.Filename);
 
             // Mark file as open.
             this.IsOpen = true;
@@ -62,22 +62,22 @@ namespace OfficeFileProperties.FileAccessors.Generic
         /// <summary>
         /// Created date in UTC time
         /// </summary>
-        public override DateTime? CreatedDateUtc
+        public override DateTime? CreatedTimeUtc
         {
             get
             {
-                return this.FileAccessor.CreationTimeUtc;
+                return this.File.CreationTimeUtc;
             }
         }
 
         /// <summary>
         /// Created date in UTC time
         /// </summary>
-        public override DateTime? ModifiedDateUtc
+        public override DateTime? ModifiedTimeUtc
         {
             get
             {
-                return this.FileAccessor.LastWriteTimeUtc;
+                return this.File.LastWriteTimeUtc;
             }
         }
 
@@ -117,7 +117,7 @@ namespace OfficeFileProperties.FileAccessors.Generic
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public override Dictionary<string, string> CustomProperties
+        public override IDictionary<string, string> CustomProperties
         {
             get
             {

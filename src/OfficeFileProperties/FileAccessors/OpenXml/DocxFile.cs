@@ -44,14 +44,18 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
             // Mark file as closed.
             this.IsOpen = false;
 
-            // Close file.
-            this.FileAccessor.Close();
+            // Close file if it still is accessible.
+            if (this.File != null)
+            {
+                // Close file.
+                this.File.Close();
 
-            // Dispose of file.
-            this.FileAccessor.Dispose();
+                // Dispose of file.
+                this.File.Dispose();
+            }
 
             // Clear file object.
-            this.FileAccessor = null;
+            this.File = null;
         }
 
         /// <summary>
@@ -60,7 +64,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         public override void OpenFile()
         {
             // Open file.
-            this.FileAccessor = WordprocessingDocument.Open(this.Filename, false);
+            this.File = WordprocessingDocument.Open(this.Filename, false);
 
             // Mark file as open.
             this.IsOpen = true;
@@ -69,13 +73,19 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         /// <summary>
         /// Created date in UTC time
         /// </summary>
-        public override DateTime? CreatedDateUtc
+        public override DateTime? CreatedTimeUtc
         {
             get
             {
-                if (this.FileAccessor.PackageProperties.Created.HasValue)
+                // Ensure file is open.
+                if (!this.IsOpen)
                 {
-                    return this.FileAccessor.PackageProperties.Created.Value.ToUniversalTime();
+                    throw new InvalidOperationException("File is not open.");
+                }
+
+                if (this.File.PackageProperties.Created.HasValue)
+                {
+                    return this.File.PackageProperties.Created.Value.ToUniversalTime();
                 }
                 else
                 {
@@ -87,13 +97,19 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         /// <summary>
         /// Created date in UTC time
         /// </summary>
-        public override DateTime? ModifiedDateUtc
+        public override DateTime? ModifiedTimeUtc
         {
             get
             {
-                if (this.FileAccessor.PackageProperties.Modified.HasValue)
+                // Ensure file is open.
+                if (!this.IsOpen)
                 {
-                    return this.FileAccessor.PackageProperties.Modified.Value.ToUniversalTime();
+                    throw new InvalidOperationException("File is not open.");
+                }
+
+                if (this.File.PackageProperties.Modified.HasValue)
+                {
+                    return this.File.PackageProperties.Modified.Value.ToUniversalTime();
                 }
                 else
                 {
@@ -109,7 +125,13 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         {
             get
             {
-                return this.FileAccessor.PackageProperties.Creator;
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
+                return this.File.PackageProperties.Creator;
             }
         }
 
@@ -120,7 +142,13 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         {
             get
             {
-                return (this.FileAccessor.ExtendedFilePropertiesPart.Properties.Company != null) ? this.FileAccessor.ExtendedFilePropertiesPart.Properties.Company.InnerText : null;
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
+                return (this.File.ExtendedFilePropertiesPart.Properties.Company != null) ? this.File.ExtendedFilePropertiesPart.Properties.Company.InnerText : null;
             }
         }
 
@@ -131,23 +159,35 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         {
             get
             {
-                return this.FileAccessor.PackageProperties.Title;
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
+                return this.File.PackageProperties.Title;
             }
         }
 
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public override Dictionary<string, string> CustomProperties
+        public override IDictionary<string, string> CustomProperties
         {
             get
             {
-                if (this.FileAccessor.CustomFilePropertiesPart == null)
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
+                if (this.File.CustomFilePropertiesPart == null)
                 {
                     return new Dictionary<string, string>();
                 }
 
-                var customProperties = this.FileAccessor.CustomFilePropertiesPart.Properties
+                var customProperties = this.File.CustomFilePropertiesPart.Properties
                                             .Select(p => (CustomDocumentProperty)p)
                                             .ToDictionary(cp => cp.Name.Value, cp => cp.InnerText.ToString());
 

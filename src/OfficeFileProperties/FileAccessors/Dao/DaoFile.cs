@@ -15,6 +15,20 @@ namespace OfficeFileProperties.FileAccessors.Dao
     public class DaoFile : FileBase<AccessDao.Database>
     {
 
+        #region Fields
+
+        /// <summary>
+        /// Database engine
+        /// </summary>
+        private readonly AccessDao.DBEngine _dbEngine;
+
+        /// <summary>
+        /// Database workspace
+        /// </summary>
+        private readonly AccessDao.Workspace _dbWorkspace;
+
+        #endregion Fields
+
         #region Constructors
 
         /// <summary>
@@ -24,9 +38,10 @@ namespace OfficeFileProperties.FileAccessors.Dao
         public DaoFile(string filename) : base(filename)
         {
             // Initialize DAO engine and workspace.
-            this.DbEngine = new AccessDao.DBEngine();
-            this.DbWorkspace = this.DbEngine.CreateWorkspace("", "admin", "", AccessDao.WorkspaceTypeEnum.dbUseJet);
+            this._dbEngine = new AccessDao.DBEngine();
+            this._dbWorkspace = this._dbEngine.CreateWorkspace("", "admin", "", AccessDao.WorkspaceTypeEnum.dbUseJet);
         }
+
         #endregion Constructors
 
         #region Properties
@@ -38,14 +53,20 @@ namespace OfficeFileProperties.FileAccessors.Dao
         {
             get
             {
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
                 try
                 {
-                    return this.FileAccessor.Containers["Databases"].Documents["SummaryInfo"].Properties["Author"].ToString();
+                    return this.File.Containers["Databases"].Documents["SummaryInfo"].Properties["Author"].Value.ToString();
                 }
                 catch (COMException ce)
                 {
-                    // If conversion problem, throw away exception.
-                    if ((uint)ce.ErrorCode == 0x800A0D1E)
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
                     {
                         return null;
                     }
@@ -65,14 +86,20 @@ namespace OfficeFileProperties.FileAccessors.Dao
         {
             get
             {
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
                 try
                 {
-                    return this.FileAccessor.Containers["Databases"].Documents["SummaryInfo"].Properties["Company"].ToString();
+                    return this.File.Containers["Databases"].Documents["SummaryInfo"].Properties["Company"].Value.ToString();
                 }
                 catch (COMException ce)
                 {
-                    // If conversion problem, throw away exception.
-                    if ((uint)ce.ErrorCode == 0x800A0D1E)
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
                     {
                         return null;
                     }
@@ -88,20 +115,27 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// <summary>
         /// Created date in UTC time
         /// </summary>
-        public override DateTime? CreatedDateUtc
+        public override DateTime? CreatedTimeUtc
         {
             get
             {
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
                 DateTime? createdTimeUtc = null;
+
+                // Try to get time from SummaryInfo.
                 try
                 {
-
-                    createdTimeUtc = DateTime.Parse(this.FileAccessor.Containers["Databases"].Documents["MSysDb"].Properties["DateCreated"].ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();                    
+                    createdTimeUtc = DateTime.Parse(this.File.Containers["Databases"].Documents["SummaryInfo"].Properties["DateCreated"].Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();                    
                 }
                 catch (COMException ce)
                 {
-                    // If conversion problem, throw away exception.
-                    if ((uint)ce.ErrorCode == 0x800A0D1E)
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
                     {
                         return null;
                     }
@@ -112,6 +146,28 @@ namespace OfficeFileProperties.FileAccessors.Dao
                     }
                 }
 
+                // If time could not be obtained from SummaryInfo, try MSysDB.
+                if (!createdTimeUtc.HasValue)
+                {
+                    try
+                    {
+                        createdTimeUtc = DateTime.Parse(this.File.Containers["Databases"].Documents["MSysDb"].Properties["DateCreated"].Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
+                    }
+                    catch (COMException ce)
+                    {
+                        // If conversion problem or value doesn't exist, return null
+                        if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                        {
+                            return null;
+                        }
+                        else
+                        {
+                            // Rethrow the exception.
+                            throw ce;
+                        }
+                    }
+                }
+
                 return createdTimeUtc;
             }
         }
@@ -119,21 +175,27 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public override Dictionary<string, string> CustomProperties
+        public override IDictionary<string, string> CustomProperties
         {
             get
             {
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
                 try
                 {
-                    if (this.FileAccessor.Containers["Databases"].Documents["UserDefined"].Properties == null)
+                    if (this.File.Containers["Databases"].Documents["UserDefined"].Properties == null)
                     {
                         return new Dictionary<string, string>();
                     }
                 }
                 catch (COMException ce)
                 {
-                    // If conversion problem, throw away exception.
-                    if ((uint)ce.ErrorCode == 0x800A0D1E)
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
                     {
                         return null;
                     }
@@ -148,7 +210,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
 
                 try
                 {
-                    foreach (AccessDao.Property property in this.FileAccessor.Containers["Databases"].Documents["UserDefined"].Properties)
+                    foreach (AccessDao.Property property in this.File.Containers["Databases"].Documents["UserDefined"].Properties)
                     {
                         try
                         {
@@ -176,8 +238,8 @@ namespace OfficeFileProperties.FileAccessors.Dao
                         }
                         catch (COMException ce)
                         {
-                            // If conversion problem, throw away exception.
-                            if ((uint)ce.ErrorCode == 0x800A0D1E)
+                            // If conversion problem or value doesn't exist, return null
+                            if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
                             {
                                 // Do nothing.
                             }
@@ -191,8 +253,8 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 }
                 catch (COMException ce)
                 {
-                    // If conversion problem, throw away exception.
-                    if ((uint)ce.ErrorCode == 0x800A0D1E)
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
                     {
                         return null;
                     }
@@ -221,16 +283,22 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// <summary>
         /// Created date in UTC time
         /// </summary>
-        public override DateTime? ModifiedDateUtc
+        public override DateTime? ModifiedTimeUtc
         {
             get
             {
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
                 DateTime? modifiedTimeUtc = null;
 
                 // Iterate through database items to find last modified time.
                 try
                 {
-                    foreach (AccessDao.Document document in this.FileAccessor.Containers["Databases"].Documents)
+                    foreach (AccessDao.Document document in this.File.Containers["Databases"].Documents)
                     {
                         try
                         {
@@ -248,14 +316,14 @@ namespace OfficeFileProperties.FileAccessors.Dao
                                 // Set modified time if it is still null.
                                 modifiedTimeUtc = modifiedTimeUtc ?? propertyTimeUtc;
 
-                                modifiedTimeUtc = (modifiedTimeUtc.Value < propertyTimeUtc.Value) ? modifiedTimeUtc : propertyTimeUtc;
+                                modifiedTimeUtc = (modifiedTimeUtc.Value < propertyTimeUtc.Value) ? propertyTimeUtc : modifiedTimeUtc;
                             }
 
                         }
                         catch (COMException ce)
                         {
-                            // If conversion problem, throw away exception.
-                            if ((uint)ce.ErrorCode == 0x800A0D1E)
+                            // If conversion problem or value doesn't exist, return null
+                            if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
                             {
                                 return null;
                             }
@@ -269,8 +337,8 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 }
                 catch (COMException ce)
                 {
-                    // If conversion problem, throw away exception.
-                    if ((uint)ce.ErrorCode == 0x800A0D1E)
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
                     {
                         return null;
                     }
@@ -292,14 +360,20 @@ namespace OfficeFileProperties.FileAccessors.Dao
         {
             get
             {
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
                 try
                 {
-                    return this.FileAccessor.Containers["Databases"].Documents["SummaryInfo"].Properties["Title"].ToString();
+                    return this.File.Containers["Databases"].Documents["SummaryInfo"].Properties["Title"].Value.ToString();
                 }
                 catch (COMException ce)
                 {
-                    // If conversion problem, throw away exception.
-                    if ((uint)ce.ErrorCode == 0x800A0D1E)
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
                     {
                         return null;
                     }
@@ -311,16 +385,6 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 }
             }
         }
-
-        /// <summary>
-        /// Database engine
-        /// </summary>
-        private AccessDao.DBEngine DbEngine { get; set; }
-
-        /// <summary>
-        /// Database workspace
-        /// </summary>
-        private AccessDao.Workspace DbWorkspace { get; set; }
 
         #endregion Properties
 
@@ -334,11 +398,15 @@ namespace OfficeFileProperties.FileAccessors.Dao
             // Mark file as closed.
             this.IsOpen = false;
 
-            // Close file.
-            this.FileAccessor.Close();
+            // Close file if it still is accessible.
+            if (this.File != null)
+            {
+                // Close file.
+                this.File.Close();
+            }
 
             // Clear file object.
-            this.FileAccessor = null;
+            this.File = null;
         }
 
         /// <summary>
@@ -346,13 +414,19 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// </summary>
         public override void OpenFile()
         {
+            if (this._dbWorkspace == null)
+            {
+                throw new InvalidOperationException("Workspace is not ready.");
+            }
+
             // Open file.
-            this.FileAccessor = this.DbWorkspace.OpenDatabase(this.Filename, false, true, "");
+            this.File = this._dbWorkspace.OpenDatabase(this.Filename, false, true, "");
 
             // Mark file as open.
             this.IsOpen = true;
         }
 
         #endregion Methods
+
     }
 }
