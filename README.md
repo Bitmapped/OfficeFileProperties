@@ -12,10 +12,6 @@ For Word, Excel, and PowerPoint, this class manipulates file properties directly
 ## System requirements
 1. NET Framework 4.5
 
-### Included DLLs
-1. DSOFile 2.1 for reading Office 97-2003 files - [Microsoft website](http://www.microsoft.com/en-us/download/details.aspx?id=8422)
-2. Microsoft Office 2013 Primary Interop Assemblies for reading Access databases - [Office 2010 version](http://www.microsoft.com/en-us/download/details.aspx?id=3508)
-
 ## NuGet availability
 This project is available on [NuGet](https://www.nuget.org/packages/OfficeFileProperties/).
 
@@ -26,16 +22,15 @@ This project is available on [NuGet](https://www.nuget.org/packages/OfficeFilePr
 ### Accessing file information
 The below code block will show you how to access properties including creation time, modification time, author, company, title, and custom properties set on the document.
 ```
-var fsFile = new OfficeFileProperties.File.File(fullFileName, multifileMode: false);
-var CreatedDateUtc = fsFile.FileProperties.CreatedTimeUtc;
-var ModifiedDateUtc = fsFile.FileProperties.ModifiedTimeUtc;
-
-// If returned type is IOfficeFileProperties, get more properties.
-if (fsFile.FileProperties is IOfficeFileProperties)
+using (var fsFile = new OfficeFile(fullFileName))
 {
-    var Author = ((IOfficeFileProperties)fsFile.FileProperties).Author;
-    var Company = ((IOfficeFileProperties)fsFile.FileProperties).Company;
-    var Title = ((IOfficeFileProperties)fsFile.FileProperties).Title;
-    var CustomProperties = ((IOfficeFileProperties)fsFile.FileProperties).CustomPropertiesString;
+    var fsProperties = fsFile.GetFileProperties();
+    
+    submissionFile.CreatedTimeLocal = fsProperties.CreatedTimeLocal;
+    submissionFile.ModifiedTimeLocal = fsProperties.ModifiedTimeLocal;
+    submissionFile.Author = fsProperties.Author;
+    submissionFile.Company = fsProperties.Company;
+    submissionFile.Title = fsProperties.Title;
+    submissionFile.CustomProperties = fsProperties.CustomPropertiesString;
 }
 ```
