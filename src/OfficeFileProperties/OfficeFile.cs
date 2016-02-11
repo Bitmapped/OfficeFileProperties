@@ -8,15 +8,27 @@ using System.Threading.Tasks;
 
 namespace OfficeFileProperties
 {
-    public class OfficeFile : IFile
+    public class OfficeFile : IFile, IDisposable
     {
+
+        #region Fields
+
         /// <summary>
         /// Stores file accessor used with this object.
         /// </summary>
         private readonly IFileBase _fileAccessor;
 
+        /// <summary>
+        /// Determine if disposal has already occurred.
+        /// </summary>
+        private bool _disposed = false;
+
+        #endregion Fields
+
+        #region Constructors
+
         public OfficeFile(string filename)
-        {     
+        {
             // Ensure file exists.
             if (!System.IO.File.Exists(filename))
             {
@@ -93,16 +105,9 @@ namespace OfficeFileProperties
             }
         }
 
-        /// <summary>
-        /// Accessor for manipulating files
-        /// </summary>
-        public IFileBase FileAccessor
-        {
-            get
-            {
-                return this._fileAccessor;
-            }
-        }
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Author name
@@ -191,6 +196,17 @@ namespace OfficeFileProperties
         }
 
         /// <summary>
+        /// Accessor for manipulating files
+        /// </summary>
+        public IFileBase FileAccessor
+        {
+            get
+            {
+                return this._fileAccessor;
+            }
+        }
+
+        /// <summary>
         /// Filename
         /// </summary>
         public string Filename
@@ -271,12 +287,24 @@ namespace OfficeFileProperties
             }
         }
 
+        #endregion Properties
+
+        #region Methods
+
         /// <summary>
         /// Closes file.
         /// </summary>
         public void CloseFile()
         {
             FileAccessor.CloseFile();
+        }
+
+        /// <summary>
+        /// Dispose of object
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
         }
 
         /// <summary>
@@ -295,5 +323,25 @@ namespace OfficeFileProperties
         {
             FileAccessor.OpenFile();
         }
+
+        /// <summary>
+        /// Dispose of object.
+        /// </summary>
+        /// <param name="disposing">Dispose of managed resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Close file
+                    CloseFile();
+                }
+
+                _disposed = true;
+            }
+        }
+
+        #endregion Methods
     }
 }

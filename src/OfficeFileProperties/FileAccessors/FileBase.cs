@@ -12,7 +12,7 @@ namespace OfficeFileProperties.FileAccessors
     /// Abstract class for directly manipulating files.
     /// </summary>
     /// <typeparam name="T">Type of object for accessing files.</typeparam>
-    public abstract class FileBase<T> : IFileBase
+    public abstract class FileBase<T> : IFileBase, IDisposable
     {
         #region Fields
 
@@ -20,6 +20,37 @@ namespace OfficeFileProperties.FileAccessors
         /// Name of file
         /// </summary>
         private readonly string _filename;
+
+        /// <summary>
+        /// Determine if disposal has already occurred.
+        /// </summary>
+        private bool _disposed = false;
+
+        /// <summary>
+        /// Dispose of object.
+        /// </summary>
+        /// <param name="disposing">Dispose of managed resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Close file
+                    CloseFile();
+                }
+
+                _disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Dispose of object
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
 
         #endregion Fields
 
