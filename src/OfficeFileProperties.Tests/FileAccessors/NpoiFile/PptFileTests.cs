@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 namespace OfficeFileProperties.FileAccessors.Npoi.Tests
 {
     [TestClass()]
-    public class DocFileTests
+    public class PptFileTests
     {
         [TestMethod()]
-        public void DocOpenAndCloseFileTest()
+        public void PptOpenAndCloseFileTest()
         {
-            var file = new NpoiFile(@"..\..\SampleFiles\Test.Doc");
+            var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
             file.OpenFile();
             file.CloseFile();
         }
 
         [TestMethod()]
-        public void DocGetAuthorTest()
+        public void PptGetAuthorTest()
         {
-            var file = new NpoiFile(@"..\..\SampleFiles\Test.Doc");
+            var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
             file.OpenFile();
 
             Assert.AreEqual("Test Author", file.Author);
@@ -30,9 +30,9 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
         }
 
         [TestMethod()]
-        public void DocGetCompanyTest()
+        public void PptGetCompanyTest()
         {
-            var file = new NpoiFile(@"..\..\SampleFiles\Test.Doc");
+            var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
             file.OpenFile();
 
             Assert.AreEqual("Test Company", file.Company);
@@ -41,23 +41,23 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
         }
 
         [TestMethod()]
-        public void DocGetCreatedTimeUtcTest()
+        public void PptGetCreatedTimeUtcTest()
         {
-            var file = new NpoiFile(@"..\..\SampleFiles\Test.Doc");
+            var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
             file.OpenFile();
 
-            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 54, 0, DateTimeKind.Utc), file.CreatedTimeUtc);
+            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 57, 59, 474, DateTimeKind.Utc), file.CreatedTimeUtc);
 
             file.CloseFile();
         }
 
         [TestMethod()]
-        public void DocGetModifiedTimeUtcTest()
+        public void PptGetModifiedTimeUtcTest()
         {
-            var file = new NpoiFile(@"..\..\SampleFiles\Test.Doc");
+            var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
             file.OpenFile();
 
-            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 55, 0, DateTimeKind.Utc), file.ModifiedTimeUtc);
+            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 58, 35, 899, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
             file.CloseFile();
         }

@@ -24,9 +24,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
             var file = new NpoiFile(@"..\..\SampleFiles\Test.Xls");
             file.OpenFile();
 
-            //throw new Exception(file.FileProperties.XlsumentSummaryInformationText);
-
-            Assert.AreEqual(file.Author, "Test Author");
+            Assert.AreEqual("Test Author", file.Author);
 
             file.CloseFile();
         }
@@ -37,7 +35,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
             var file = new NpoiFile(@"..\..\SampleFiles\Test.Xls");
             file.OpenFile();
 
-            Assert.AreEqual(file.Company, "Test Company");
+            Assert.AreEqual("Test Company", file.Company);
 
             file.CloseFile();
         }
@@ -48,7 +46,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
             var file = new NpoiFile(@"..\..\SampleFiles\Test.Xls");
             file.OpenFile();
 
-            Assert.AreEqual(file.CreatedTimeUtc, new DateTime(2016, 3, 1, 3, 29, 26, DateTimeKind.Utc));
+            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 29, 26, DateTimeKind.Utc), file.CreatedTimeUtc);
 
             file.CloseFile();
         }
@@ -59,7 +57,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
             var file = new NpoiFile(@"..\..\SampleFiles\Test.Xls");
             file.OpenFile();
 
-            Assert.AreEqual(file.ModifiedTimeUtc, new DateTime(2016, 3, 1, 3, 30, 47, DateTimeKind.Utc));
+            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 30, 47, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
             file.CloseFile();
         }
