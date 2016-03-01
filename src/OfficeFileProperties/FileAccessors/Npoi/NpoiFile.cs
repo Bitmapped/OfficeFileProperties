@@ -1,30 +1,46 @@
-﻿using DSOFile;
+﻿using NPOI.HPSF;
+using NPOI.HPSF.Extractor;
+using NPOI.POIFS.FileSystem;
+using OfficeFileProperties.Support.Npoi;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OfficeFileProperties.FileAccessors.Dso
+namespace OfficeFileProperties.FileAccessors.Npoi
 {
     /// <summary>
     /// Class for using Microsoft Office 97-2003 files.
     /// </summary>
-    public class DsoFile : FileBase<OleDocumentProperties>
+    public class NpoiFile : FileBase<NpoiPropertiesOnlyDocument>
     {
-
         #region Constructors
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="filename">Filename to open.</param>
-        public DsoFile(string filename) : base(filename)
+        public NpoiFile(string filename) : base(filename)
         { }
+
         #endregion Constructors
 
         #region Properties
+
+        /// <summary>
+        /// HPSF file properties
+        /// </summary>
+        public HPSFPropertiesExtractor FileProperties { get; set; }
+
+        /// <summary>
+        /// HPSF summary information
+        /// </summary>
+        private SummaryInformation SummaryInformation { get; set; }
+
+        /// <summary>
+        /// HPSF document summary information
+        /// </summary>
+        private DocumentSummaryInformation DocumentSummaryInformation { get; set; }
 
         /// <summary>
         /// Author name
@@ -39,7 +55,7 @@ namespace OfficeFileProperties.FileAccessors.Dso
                     throw new InvalidOperationException("File is not open.");
                 }
 
-                return this.File.SummaryProperties.Author;
+                return this.SummaryInformation.Author;
             }
         }
 
@@ -56,7 +72,7 @@ namespace OfficeFileProperties.FileAccessors.Dso
                     throw new InvalidOperationException("File is not open.");
                 }
 
-                return this.File.SummaryProperties.Company;
+                return this.DocumentSummaryInformation.Company;
             }
         }
 
@@ -67,9 +83,9 @@ namespace OfficeFileProperties.FileAccessors.Dso
         {
             get
             {
-                if (this.File.SummaryProperties.DateCreated is DateTime)
+                if (this.SummaryInformation.CreateDateTime.HasValue)
                 {
-                    return ((DateTime)this.File.SummaryProperties.DateCreated).ToUniversalTime();
+                    return this.SummaryInformation.CreateDateTime.Value.ToUniversalTime();
                 }
                 else
                 {
@@ -91,16 +107,16 @@ namespace OfficeFileProperties.FileAccessors.Dso
                     throw new InvalidOperationException("File is not open.");
                 }
 
-                if (this.File.CustomProperties == null)
+                if (this.DocumentSummaryInformation.CustomProperties == null)
                 {
                     return new Dictionary<string, string>();
                 }
 
                 // Iterate manually and specify types because of dynamic COM object.
                 var customProperties = new Dictionary<string, string>();
-                foreach (CustomProperty item in this.File.CustomProperties)
+                foreach (DictionaryEntry item in this.DocumentSummaryInformation.CustomProperties)
                 {
-                    customProperties.Add(item.ToString(), item.get_Value().ToString());
+                    customProperties.Add(item.Key.ToString(), item.Value.ToString());
                 }
 
                 return customProperties;
@@ -142,9 +158,9 @@ namespace OfficeFileProperties.FileAccessors.Dso
         {
             get
             {
-                if (this.File.SummaryProperties.DateLastSaved is DateTime)
+                if (this.SummaryInformation.LastSaveDateTime.HasValue)
                 {
-                    return ((DateTime)this.File.SummaryProperties.DateLastSaved).ToUniversalTime();
+                    return this.SummaryInformation.LastSaveDateTime.Value.ToUniversalTime();
                 }
                 else
                 {
@@ -166,7 +182,7 @@ namespace OfficeFileProperties.FileAccessors.Dso
                     throw new InvalidOperationException("File is not open.");
                 }
 
-                return this.File.SummaryProperties.Title;
+                return this.SummaryInformation.Title;
             }
         }
 
@@ -182,12 +198,9 @@ namespace OfficeFileProperties.FileAccessors.Dso
             // Mark file as closed.
             this.IsOpen = false;
 
-            // Close file if it still is accessible.
-            if (this.File != null)
-            {
-                // Close file.
-                this.File.Close();
-            }
+            // Clear properties.
+            this.SummaryInformation = null;
+            this.DocumentSummaryInformation = null;
 
             // Clear file object.
             this.File = null;
@@ -198,9 +211,21 @@ namespace OfficeFileProperties.FileAccessors.Dso
         /// </summary>
         public override void OpenFile()
         {
+            // Open file stream.
+            var stream = new FileStream(this.Filename, FileMode.Open, FileAccess.Read);
+
+            // Open file system.
+            var fs = new POIFSFileSystem(stream);
+
             // Open file.
-            this.File = new OleDocumentProperties();
-            this.File.Open(Filename, true);
+            this.File = new NpoiPropertiesOnlyDocument(fs);
+
+            // Access properties.
+            this.SummaryInformation = this.File.SummaryInformation;
+            this.DocumentSummaryInformation = this.File.DocumentSummaryInformation;
+
+            // Close stream.
+            stream.Close();
 
             // Mark file as open.
             this.IsOpen = true;
