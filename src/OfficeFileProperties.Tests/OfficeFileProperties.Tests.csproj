@@ -73,6 +73,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileAccessors\NpoiFile\XlsFileTests.cs" />
     <Compile Include="FileAccessors\NpoiFile\DocFileTests.cs" />
     <Compile Include="FileAccessors\OpenXml\PptxFileTests.cs" />
     <Compile Include="FileAccessors\OpenXml\DocxFileTests.cs" />
