@@ -10,13 +10,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
     [TestClass()]
     public class PptFileTests
     {
-        [TestMethod()]
-        public void PptOpenAndCloseFileTest()
-        {
-            var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
-            file.OpenFile();
-            file.CloseFile();
-        }
+        #region Methods
 
         [TestMethod()]
         public void PptGetAuthorTest()
@@ -61,5 +55,15 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
 
             file.CloseFile();
         }
+
+        [TestMethod()]
+        public void PptOpenAndCloseFileTest()
+        {
+            var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
+            file.OpenFile();
+            file.CloseFile();
+        }
+
+        #endregion Methods
     }
 }

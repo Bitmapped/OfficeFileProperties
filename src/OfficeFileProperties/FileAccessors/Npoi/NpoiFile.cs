@@ -14,6 +14,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
     /// </summary>
     public class NpoiFile : FileBase<NpoiPropertiesOnlyDocument>
     {
+
         #region Constructors
 
         /// <summary>
@@ -22,25 +23,9 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// <param name="filename">Filename to open.</param>
         public NpoiFile(string filename) : base(filename)
         { }
-
         #endregion Constructors
 
         #region Properties
-
-        /// <summary>
-        /// HPSF file properties
-        /// </summary>
-        public HPSFPropertiesExtractor FileProperties { get; set; }
-
-        /// <summary>
-        /// HPSF summary information
-        /// </summary>
-        private SummaryInformation SummaryInformation { get; set; }
-
-        /// <summary>
-        /// HPSF document summary information
-        /// </summary>
-        private DocumentSummaryInformation DocumentSummaryInformation { get; set; }
 
         /// <summary>
         /// Author name
@@ -124,6 +109,11 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         }
 
         /// <summary>
+        /// HPSF file properties
+        /// </summary>
+        public HPSFPropertiesExtractor FileProperties { get; set; }
+
+        /// <summary>
         /// Type of file.
         /// </summary>
         public override FileTypeEnum FileType
@@ -186,6 +176,16 @@ namespace OfficeFileProperties.FileAccessors.Npoi
             }
         }
 
+        /// <summary>
+        /// HPSF document summary information
+        /// </summary>
+        private DocumentSummaryInformation DocumentSummaryInformation { get; set; }
+
+        /// <summary>
+        /// HPSF summary information
+        /// </summary>
+        private SummaryInformation SummaryInformation { get; set; }
+
         #endregion Properties
 
         #region Methods
@@ -232,5 +232,6 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         }
 
         #endregion Methods
+
     }
 }

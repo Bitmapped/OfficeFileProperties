@@ -11,13 +11,7 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
     [TestClass()]
     public class AccdbFileTests
     {
-        [TestMethod()]
-        public void AccdbOpenAndCloseFileTest()
-        {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
-            file.OpenFile();
-            file.CloseFile();
-        }
+        #region Methods
 
         [TestMethod()]
         public void AccdbGetAuthorTest()
@@ -52,17 +46,6 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
             file.CloseFile();
         }
 
-        [TestMethod()]
-        public void AccdbGetModifiedTimeUtcTest()
-        {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
-            file.OpenFile();
-
-            Assert.AreEqual(new DateTime(2016, 3, 1, 15, 27, 23, DateTimeKind.Utc), file.ModifiedTimeUtc);
-
-            file.CloseFile();
-        }
-
         [TestMethod]
         public void AccdbGetCustomPropertiesTest()
         {
@@ -75,5 +58,26 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
 
             file.CloseFile();
         }
+
+        [TestMethod()]
+        public void AccdbGetModifiedTimeUtcTest()
+        {
+            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
+            file.OpenFile();
+
+            Assert.AreEqual(new DateTime(2016, 3, 1, 15, 27, 23, DateTimeKind.Utc), file.ModifiedTimeUtc);
+
+            file.CloseFile();
+        }
+
+        [TestMethod()]
+        public void AccdbOpenAndCloseFileTest()
+        {
+            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
+            file.OpenFile();
+            file.CloseFile();
+        }
+
+        #endregion Methods
     }
 }

@@ -11,13 +11,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
     [TestClass()]
     public class XlsxFileTests
     {
-        [TestMethod()]
-        public void XlsxOpenAndCloseFileTest()
-        {
-            var file = new XlsxFile(@"..\..\SampleFiles\Test.xlsx");
-            file.OpenFile();
-            file.CloseFile();
-        }
+        #region Methods
 
         [TestMethod()]
         public void XlsxGetAuthorTest()
@@ -62,5 +56,15 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
 
             file.CloseFile();
         }
+
+        [TestMethod()]
+        public void XlsxOpenAndCloseFileTest()
+        {
+            var file = new XlsxFile(@"..\..\SampleFiles\Test.xlsx");
+            file.OpenFile();
+            file.CloseFile();
+        }
+
+        #endregion Methods
     }
 }

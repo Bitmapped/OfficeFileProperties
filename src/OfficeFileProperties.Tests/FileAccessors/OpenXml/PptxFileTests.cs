@@ -11,13 +11,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
     [TestClass()]
     public class PptxFileTests
     {
-        [TestMethod()]
-        public void PptxOpenAndCloseFileTest()
-        {
-            var file = new PptxFile(@"..\..\SampleFiles\Test.Pptx");
-            file.OpenFile();
-            file.CloseFile();
-        }
+        #region Methods
 
         [TestMethod()]
         public void PptxGetAuthorTest()
@@ -62,5 +56,15 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
 
             file.CloseFile();
         }
+
+        [TestMethod()]
+        public void PptxOpenAndCloseFileTest()
+        {
+            var file = new PptxFile(@"..\..\SampleFiles\Test.Pptx");
+            file.OpenFile();
+            file.CloseFile();
+        }
+
+        #endregion Methods
     }
 }

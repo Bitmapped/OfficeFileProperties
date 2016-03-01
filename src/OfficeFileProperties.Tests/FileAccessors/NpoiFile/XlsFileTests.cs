@@ -10,13 +10,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
     [TestClass()]
     public class XlsFileTests
     {
-        [TestMethod()]
-        public void XlsOpenAndCloseFileTest()
-        {
-            var file = new NpoiFile(@"..\..\SampleFiles\Test.Xls");
-            file.OpenFile();
-            file.CloseFile();
-        }
+        #region Methods
 
         [TestMethod()]
         public void XlsGetAuthorTest()
@@ -61,5 +55,15 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
 
             file.CloseFile();
         }
+
+        [TestMethod()]
+        public void XlsOpenAndCloseFileTest()
+        {
+            var file = new NpoiFile(@"..\..\SampleFiles\Test.Xls");
+            file.OpenFile();
+            file.CloseFile();
+        }
+
+        #endregion Methods
     }
 }

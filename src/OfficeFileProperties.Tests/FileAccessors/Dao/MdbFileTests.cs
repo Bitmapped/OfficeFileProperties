@@ -11,13 +11,7 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
     [TestClass()]
     public class MdbFileTests
     {
-        [TestMethod()]
-        public void MdbOpenAndCloseFileTest()
-        {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Mdb");
-            file.OpenFile();
-            file.CloseFile();
-        }
+        #region Methods
 
         [TestMethod()]
         public void MdbGetAuthorTest()
@@ -52,17 +46,6 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
             file.CloseFile();
         }
 
-        [TestMethod()]
-        public void MdbGetModifiedTimeUtcTest()
-        {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Mdb");
-            file.OpenFile();
-
-            Assert.AreEqual(new DateTime(2016, 3, 1, 15, 27, 39, DateTimeKind.Utc), file.ModifiedTimeUtc);
-
-            file.CloseFile();
-        }
-
         [TestMethod]
         public void MdbGetCustomPropertiesTest()
         {
@@ -75,5 +58,26 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
 
             file.CloseFile();
         }
+
+        [TestMethod()]
+        public void MdbGetModifiedTimeUtcTest()
+        {
+            var file = new DaoFile(@"..\..\SampleFiles\Test.Mdb");
+            file.OpenFile();
+
+            Assert.AreEqual(new DateTime(2016, 3, 1, 15, 27, 39, DateTimeKind.Utc), file.ModifiedTimeUtc);
+
+            file.CloseFile();
+        }
+
+        [TestMethod()]
+        public void MdbOpenAndCloseFileTest()
+        {
+            var file = new DaoFile(@"..\..\SampleFiles\Test.Mdb");
+            file.OpenFile();
+            file.CloseFile();
+        }
+
+        #endregion Methods
     }
 }
