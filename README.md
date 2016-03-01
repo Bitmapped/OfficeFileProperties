@@ -11,6 +11,7 @@ For Word, Excel, and PowerPoint, this class manipulates file properties directly
 
 ## System requirements
 1. NET Framework 4.5
+2. Microsoft Access or the [Microsoft Access 2013 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=39358) installed on computers if Access databases will be used.
 
 ## NuGet availability
 This project is available on [NuGet](https://www.nuget.org/packages/OfficeFileProperties/).
@@ -19,8 +20,7 @@ This project is available on [NuGet](https://www.nuget.org/packages/OfficeFilePr
 ### Getting started
 1. Add **OfficeFileProperties.dll** as a reference in your project or place it in the **\bin** folder.
 2. Add the dependency [**OpenXMLSDK-MOT**](https://github.com/OfficeDev/Open-XML-SDK) as a reference in your project or place its DLLs **DocumentFOrmat.OpenXml.dll** and **System.IO.Packaging.dll** in the **\bin** folder.
-3. If you wish to use Office 97-2003 files, add the dependency [**NPOI**](https://github.com/tonyqus/npoi) as a reference in your project or place its DLL in the **\bin** folder.
-4. If you wish to use Microsoft Access databases, ensure Microsoft Access is installed on the system you will deploy to or install the [Microsoft Access 2013 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=39358).
+3. If you wish to use Office 97-2003 files, add the dependency [**NPOI**](https://github.com/tonyqus/npoi) as a reference in your project or place its DLL in the **\bin** folder
 
 ### Accessing file information
 The below code block will show you how to access properties including creation time, modification time, author, company, title, and custom properties set on the document.
