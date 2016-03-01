@@ -10,8 +10,14 @@ namespace OfficeFileProperties.Support
     {
         static public string Serialize(this IDictionary<string, object> dictionary)
         {
+            // Return empty string if dictionary is null.
+            if (dictionary == null)
+            {
+                return string.Empty;
+            }
+
             // Generate string.
-            var propertyString = String.Empty;
+            var propertyString = string.Empty;
 
             foreach (var item in dictionary)
             {
