@@ -57,8 +57,8 @@ namespace OfficeFileProperties
                     case ".xls":
                     case ".xlm":
                     case ".xlt":
-                        // Use Dso.
-                        this._fileAccessor = new FileAccessors.Dso.DsoFile(filename);
+                        // Use Npoi.
+                        this._fileAccessor = new FileAccessors.Npoi.NpoiFile(filename);
                         break;
 
                     case ".docx":

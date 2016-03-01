@@ -57,13 +57,9 @@
       <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Interop.Dsofile">
-      <HintPath>..\Libraries\DSOFile\Interop.Dsofile.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="Microsoft.Office.Interop.Access.Dao, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\Libraries\Office\Microsoft.Office.Interop.Access.Dao.dll</HintPath>
     </Reference>
     <Reference Include="NPOI, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
@@ -97,7 +93,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileAccessors\Dao\DaoFile.cs" />
-    <Compile Include="FileAccessors\Dso\DsoFile.cs" />
     <Compile Include="FileAccessors\FileBase.cs" />
     <Compile Include="FileAccessors\Generic\GenericFile.cs" />
     <Compile Include="FileAccessors\IFileBase.cs" />
