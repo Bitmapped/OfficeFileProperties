@@ -97,7 +97,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public override IDictionary<string, string> CustomProperties
+        public override IDictionary<string, object> CustomProperties
         {
             get
             {
@@ -109,14 +109,14 @@ namespace OfficeFileProperties.FileAccessors.Npoi
 
                 if (this.DocumentSummaryInformation.CustomProperties == null)
                 {
-                    return new Dictionary<string, string>();
+                    return new Dictionary<string, object>();
                 }
 
                 // Iterate manually and specify types because of dynamic COM object.
-                var customProperties = new Dictionary<string, string>();
+                var customProperties = new Dictionary<string, object>();
                 foreach (DictionaryEntry item in this.DocumentSummaryInformation.CustomProperties)
                 {
-                    customProperties.Add(item.Key.ToString(), item.Value.ToString());
+                    customProperties.Add(item.Key.ToString(), item.Value);
                 }
 
                 return customProperties;

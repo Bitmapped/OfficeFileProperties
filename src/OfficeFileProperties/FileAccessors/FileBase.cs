@@ -154,7 +154,7 @@ namespace OfficeFileProperties.FileAccessors
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public virtual IDictionary<string, string> CustomProperties
+        public virtual IDictionary<string, object> CustomProperties
         {
             get
             {

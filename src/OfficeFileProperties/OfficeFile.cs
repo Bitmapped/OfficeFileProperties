@@ -176,7 +176,7 @@ namespace OfficeFileProperties
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public IDictionary<string, string> CustomProperties
+        public IDictionary<string, object> CustomProperties
         {
             get
             {

@@ -175,7 +175,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public override IDictionary<string, string> CustomProperties
+        public override IDictionary<string, object> CustomProperties
         {
             get
             {
@@ -189,7 +189,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 {
                     if (this.File.Containers["Databases"].Documents["UserDefined"].Properties == null)
                     {
-                        return new Dictionary<string, string>();
+                        return new Dictionary<string, object>();
                     }
                 }
                 catch (COMException ce)
@@ -206,7 +206,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                     }
                 }
 
-                var customProperties = new Dictionary<string, string>();
+                var customProperties = new Dictionary<string, object>();
 
                 try
                 {
@@ -232,7 +232,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
 
                                 default:
                                     // Record property.
-                                    customProperties.Add(property.Name.ToString(), property.Value.ToString());
+                                    customProperties.Add(property.Name.ToString(), property.Value);
                                     break;
                             }
                         }

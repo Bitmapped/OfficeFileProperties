@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,6 +59,19 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
             file.OpenFile();
 
             Assert.AreEqual(new DateTime(2016, 3, 1, 15, 27, 23, DateTimeKind.Utc), file.ModifiedTimeUtc);
+
+            file.CloseFile();
+        }
+
+        [TestMethod]
+        public void AccdbGetCustomPropertiesTest()
+        {
+            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
+            file.OpenFile();
+
+            var expectedValue = new Dictionary<string, object>() { { "Test1", "Test" }, { "Test2", 1 } };
+
+            CollectionAssert.AreEqual((ICollection)expectedValue, (ICollection)file.CustomProperties);
 
             file.CloseFile();
         }

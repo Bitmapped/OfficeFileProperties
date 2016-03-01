@@ -142,18 +142,18 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public override IDictionary<string, string> CustomProperties
+        public override IDictionary<string, object> CustomProperties
         {
             get
             {
                 if (this.File.CustomFilePropertiesPart == null)
                 {
-                    return new Dictionary<string, string>();
+                    return new Dictionary<string, object>();
                 }
 
                 var customProperties = this.File.CustomFilePropertiesPart.Properties
                                             .Select(p => (CustomDocumentProperty)p)
-                                            .ToDictionary(cp => cp.Name.Value, cp => cp.InnerText.ToString());
+                                            .ToDictionary<CustomDocumentProperty, string, object>(cp => cp.Name.Value, cp => cp.InnerText.ToString());
 
                 return customProperties;
             }

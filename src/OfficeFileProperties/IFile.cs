@@ -33,7 +33,7 @@ namespace OfficeFileProperties
         /// <summary>
         /// Custom Properties
         /// </summary>
-        IDictionary<string, string> CustomProperties { get; }
+        IDictionary<string, object> CustomProperties { get; }
 
         /// <summary>
         /// Serialize Custom Properties as a string.

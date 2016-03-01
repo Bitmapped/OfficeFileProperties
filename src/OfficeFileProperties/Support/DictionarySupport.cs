@@ -8,7 +8,7 @@ namespace OfficeFileProperties.Support
 {
     static public class DictionarySupport
     {
-        static public string Serialize(this IDictionary<string, string> dictionary)
+        static public string Serialize(this IDictionary<string, object> dictionary)
         {
             // Generate string.
             var propertyString = String.Empty;
@@ -21,8 +21,13 @@ namespace OfficeFileProperties.Support
                     propertyString += " ||| ";
                 }
 
-                // Add new item onto string.
-                propertyString += item.Key + " ::: " + item.Value;
+                // Include in try-catch block in case of problem with converting value to string.
+                try
+                {
+                    // Add new item onto string.
+                    propertyString += item.Key + " ::: " + item.Value.ToString();
+                }
+                catch { }
             }
 
             return propertyString;

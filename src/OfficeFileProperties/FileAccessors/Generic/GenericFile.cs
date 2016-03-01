@@ -117,7 +117,7 @@ namespace OfficeFileProperties.FileAccessors.Generic
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public override IDictionary<string, string> CustomProperties
+        public override IDictionary<string, object> CustomProperties
         {
             get
             {
