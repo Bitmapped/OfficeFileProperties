@@ -25,11 +25,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
             var file = new PptxFile(@"..\..\SampleFiles\Test.Pptx");
             file.OpenFile();
 
-            // Test property.
-            if (file.Author != "Test Author")
-            {
-                Assert.Fail();
-            }
+            Assert.AreEqual(file.Author, "Test Author");
 
             file.CloseFile();
         }
@@ -40,11 +36,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
             var file = new PptxFile(@"..\..\SampleFiles\Test.Pptx");
             file.OpenFile();
 
-            // Test property.
-            if (file.Company != "Test Company")
-            {
-                Assert.Fail();
-            }
+            Assert.AreEqual(file.Company, "Test Company");
 
             file.CloseFile();
         }
@@ -55,11 +47,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
             var file = new PptxFile(@"..\..\SampleFiles\Test.Pptx");
             file.OpenFile();
 
-            // Test property.
-            if (file.CreatedTimeUtc != new DateTime(2016, 3, 1, 3, 57, 59, DateTimeKind.Utc))
-            {
-                Assert.Fail();
-            }
+            Assert.AreEqual(file.CreatedTimeUtc, new DateTime(2016, 3, 1, 3, 57, 59, DateTimeKind.Utc));
 
             file.CloseFile();
         }
@@ -70,11 +58,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
             var file = new PptxFile(@"..\..\SampleFiles\Test.Pptx");
             file.OpenFile();
 
-            // Test property.s
-            if (file.ModifiedTimeUtc != new DateTime(2016, 3, 1, 3, 58, 29, DateTimeKind.Utc))
-            {
-                Assert.Fail();
-            }
+            Assert.AreEqual(file.ModifiedTimeUtc, new DateTime(2016, 3, 1, 3, 58, 29, DateTimeKind.Utc));
 
             file.CloseFile();
         }
