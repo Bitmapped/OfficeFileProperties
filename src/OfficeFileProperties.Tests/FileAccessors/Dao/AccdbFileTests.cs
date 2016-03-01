@@ -16,7 +16,7 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
         [TestMethod()]
         public void AccdbGetAuthorTest()
         {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
+            var file = new OfficeFile(@"..\..\SampleFiles\Test.Accdb");
             file.OpenFile();
 
             Assert.AreEqual("Test Author", file.Author);
@@ -27,7 +27,7 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
         [TestMethod()]
         public void AccdbGetCompanyTest()
         {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
+            var file = new OfficeFile(@"..\..\SampleFiles\Test.Accdb");
             file.OpenFile();
 
             Assert.AreEqual("Test Company", file.Company);
@@ -38,7 +38,7 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
         [TestMethod()]
         public void AccdbGetCreatedTimeUtcTest()
         {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
+            var file = new OfficeFile(@"..\..\SampleFiles\Test.Accdb");
             file.OpenFile();
 
             Assert.AreEqual(new DateTime(2016, 3, 1, 15, 24, 25, DateTimeKind.Utc), file.CreatedTimeUtc);
@@ -49,7 +49,7 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
         [TestMethod]
         public void AccdbGetCustomPropertiesTest()
         {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
+            var file = new OfficeFile(@"..\..\SampleFiles\Test.Accdb");
             file.OpenFile();
 
             var expectedValue = new Dictionary<string, object>() { { "Test1", "Test" }, { "Test2", 1 } };
@@ -62,10 +62,10 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
         [TestMethod()]
         public void AccdbGetModifiedTimeUtcTest()
         {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
+            var file = new OfficeFile(@"..\..\SampleFiles\Test.Accdb");
             file.OpenFile();
 
-            Assert.AreEqual(new DateTime(2016, 3, 1, 15, 27, 23, DateTimeKind.Utc), file.ModifiedTimeUtc);
+            Assert.AreEqual(new DateTime(2016, 3, 1, 16, 03, 02, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
             file.CloseFile();
         }
@@ -73,7 +73,7 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
         [TestMethod()]
         public void AccdbOpenAndCloseFileTest()
         {
-            var file = new DaoFile(@"..\..\SampleFiles\Test.Accdb");
+            var file = new OfficeFile(@"..\..\SampleFiles\Test.Accdb");
             file.OpenFile();
             file.CloseFile();
         }
