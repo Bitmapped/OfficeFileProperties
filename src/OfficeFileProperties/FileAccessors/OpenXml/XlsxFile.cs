@@ -124,7 +124,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         {
             get
             {
-                return (this.File.ExtendedFilePropertiesPart.Properties.Company != null) ? this.File.ExtendedFilePropertiesPart.Properties.Company.InnerText : null;
+                return ((this.File.ExtendedFilePropertiesPart != null) && (this.File.ExtendedFilePropertiesPart.Properties.Company != null)) ? this.File.ExtendedFilePropertiesPart.Properties.Company.InnerText : null;
             }
         }
 

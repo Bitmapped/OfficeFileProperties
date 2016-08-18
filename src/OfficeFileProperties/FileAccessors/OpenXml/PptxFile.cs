@@ -148,7 +148,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
                     throw new InvalidOperationException("File is not open.");
                 }
 
-                return (this.File.ExtendedFilePropertiesPart.Properties.Company != null) ? this.File.ExtendedFilePropertiesPart.Properties.Company.InnerText : null;
+                return ((this.File.ExtendedFilePropertiesPart != null) && (this.File.ExtendedFilePropertiesPart.Properties.Company != null)) ? this.File.ExtendedFilePropertiesPart.Properties.Company.InnerText : null;
             }
         }
 
