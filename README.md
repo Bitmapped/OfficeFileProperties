@@ -38,3 +38,7 @@ using (var fsFile = new OfficeFile(fullFileName))
     submissionFile.CustomProperties = fsProperties.CustomPropertiesString;
 }
 ```
+
+## Known issues
+### BigInt type in Access 2016 v16.7 databases
+The Office 365 version of Access 2016 introduced support for the [BigInt (Large Number) data type](https://support.office.com/en-us/article/Using-the-Large-Number-data-type-5b623f6e-641d-4e97-8bdf-b77bae076f70) in version 16.0.7812. When this data type is used, the database format is automatically upgraded to v16.7. MSI-based installations of Access 2016 and the Access 2016 Runtime cannot open these databases and will thrown an exception with error code `0x800A0F74`. The only solution is believed to be to install an Office 365-based version of Access on the computer.
