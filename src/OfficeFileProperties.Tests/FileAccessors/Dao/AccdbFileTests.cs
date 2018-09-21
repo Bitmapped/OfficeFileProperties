@@ -36,6 +36,17 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
         }
 
         [TestMethod()]
+        public void AccdbGetCommentsTest()
+        {
+            var file = new OfficeFile(@"..\..\SampleFiles\Test.Accdb");
+            file.OpenFile();
+
+            Assert.AreEqual("Test Comments", file.Comments);
+
+            file.CloseFile();
+        }
+
+        [TestMethod()]
         public void AccdbGetCreatedTimeUtcTest()
         {
             var file = new OfficeFile(@"..\..\SampleFiles\Test.Accdb");
@@ -65,7 +76,7 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
             var file = new OfficeFile(@"..\..\SampleFiles\Test.Accdb");
             file.OpenFile();
 
-            Assert.AreEqual(new DateTime(2016, 3, 1, 16, 03, 02, DateTimeKind.Utc), file.ModifiedTimeUtc);
+            Assert.AreEqual(new DateTime(2018, 9, 21, 16, 02, 33, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
             file.CloseFile();
         }

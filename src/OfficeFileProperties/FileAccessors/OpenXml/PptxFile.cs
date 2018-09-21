@@ -153,6 +153,23 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         }
 
         /// <summary>
+        /// Comments (description)
+        /// </summary>
+        public override string Comments
+        {
+            get
+            {
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
+                return this.File.PackageProperties.Description;
+            }
+        }
+
+        /// <summary>
         /// Title
         /// </summary>
         public override string Title

@@ -62,6 +62,23 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         }
 
         /// <summary>
+        /// Comments (description)
+        /// </summary>
+        public override string Comments
+        {
+            get
+            {
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
+                return this.SummaryInformation.Comments;
+            }
+        }
+
+        /// <summary>
         /// Created date in UTC time
         /// </summary>
         public override DateTime? CreatedTimeUtc

@@ -107,6 +107,21 @@ namespace OfficeFileProperties.FileAccessors
         }
 
         /// <summary>
+        /// Comments (description)
+        /// </summary>
+        public virtual string Comments
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
         /// Created Time in local time
         /// </summary>
         public virtual DateTime? CreatedTimeLocal

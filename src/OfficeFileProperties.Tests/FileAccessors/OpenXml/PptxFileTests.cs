@@ -36,6 +36,17 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
         }
 
         [TestMethod()]
+        public void PptxGetCommentsTest()
+        {
+            var file = new PptxFile(@"..\..\SampleFiles\Test.Pptx");
+            file.OpenFile();
+
+            Assert.AreEqual("Test Comments", file.Comments);
+
+            file.CloseFile();
+        }
+
+        [TestMethod()]
         public void PptxGetCreatedTimeUtcTest()
         {
             var file = new PptxFile(@"..\..\SampleFiles\Test.Pptx");
@@ -52,7 +63,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
             var file = new PptxFile(@"..\..\SampleFiles\Test.Pptx");
             file.OpenFile();
 
-            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 58, 29, DateTimeKind.Utc), file.ModifiedTimeUtc);
+            Assert.AreEqual(new DateTime(2018, 9, 21, 15, 15, 55, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
             file.CloseFile();
         }

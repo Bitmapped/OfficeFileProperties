@@ -113,6 +113,39 @@ namespace OfficeFileProperties.FileAccessors.Dao
         }
 
         /// <summary>
+        /// Comments (description)
+        /// </summary>
+        public override string Comments
+        {
+            get
+            {
+                // Ensure file is open.
+                if (!this.IsOpen)
+                {
+                    throw new InvalidOperationException("File is not open.");
+                }
+
+                try
+                {
+                    return this.File.Containers["Databases"].Documents["SummaryInfo"].Properties["Comments"].Value.ToString();
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Created date in UTC time
         /// </summary>
         public override DateTime? CreatedTimeUtc

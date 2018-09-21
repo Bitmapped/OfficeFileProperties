@@ -104,6 +104,17 @@ namespace OfficeFileProperties.FileAccessors.Generic
         }
 
         /// <summary>
+        /// Comments (description)
+        /// </summary>
+        public override string Comments
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Title
         /// </summary>
         public override string Title

@@ -91,7 +91,7 @@ namespace OfficeFileProperties
 
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 // Try using generic.
                 try
@@ -138,6 +138,22 @@ namespace OfficeFileProperties
             set
             {
                 FileAccessor.Company = value;
+            }
+        }
+
+        /// <summary>
+        /// Comments (description)
+        /// </summary>
+        public string Comments
+        {
+            get
+            {
+                return FileAccessor.Comments;
+            }
+
+            set
+            {
+                FileAccessor.Comments = value;
             }
         }
 

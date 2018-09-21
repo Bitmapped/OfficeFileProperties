@@ -35,6 +35,17 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
         }
 
         [TestMethod()]
+        public void PptGetCommentsTest()
+        {
+            var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
+            file.OpenFile();
+
+            Assert.AreEqual("Test Comments", file.Comments);
+
+            file.CloseFile();
+        }
+
+        [TestMethod()]
         public void PptGetCreatedTimeUtcTest()
         {
             var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
@@ -51,7 +62,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi.Tests
             var file = new NpoiFile(@"..\..\SampleFiles\Test.Ppt");
             file.OpenFile();
 
-            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 58, 35, 899, DateTimeKind.Utc), file.ModifiedTimeUtc);
+            Assert.AreEqual(new DateTime(2018, 9, 21, 15, 15, 41, 11, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
             file.CloseFile();
         }

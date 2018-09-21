@@ -36,6 +36,17 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
         }
 
         [TestMethod()]
+        public void DocxGetCommentsTest()
+        {
+            var file = new DocxFile(@"..\..\SampleFiles\Test.Docx");
+            file.OpenFile();
+
+            Assert.AreEqual("Test Comments", file.Comments);
+
+            file.CloseFile();
+        }
+
+        [TestMethod()]
         public void DocxGetCreatedTimeUtcTest()
         {
             var file = new DocxFile(@"..\..\SampleFiles\Test.Docx");
@@ -52,7 +63,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
             var file = new DocxFile(@"..\..\SampleFiles\Test.Docx");
             file.OpenFile();
 
-            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 56, 0, DateTimeKind.Utc), file.ModifiedTimeUtc);
+            Assert.AreEqual(new DateTime(2018, 9, 21, 15, 11, 0, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
             file.CloseFile();
         }

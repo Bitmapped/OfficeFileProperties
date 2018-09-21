@@ -16,9 +16,14 @@ namespace OfficeFileProperties
         string Author { get; set; }
 
         /// <summary>
-        /// Company anme
+        /// Company name
         /// </summary>
         string Company { get; set; }
+
+        /// <summary>
+        /// Comments (description)
+        /// </summary>
+        string Comments { get; set; }
 
         /// <summary>
         /// Created Time in local time

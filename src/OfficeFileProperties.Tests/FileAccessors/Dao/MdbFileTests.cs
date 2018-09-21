@@ -36,6 +36,17 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
         }
 
         [TestMethod()]
+        public void MdbGetCommentsTest()
+        {
+            var file = new OfficeFile(@"..\..\SampleFiles\Test.Mdb");
+            file.OpenFile();
+
+            Assert.AreEqual("Test Comments", file.Comments);
+
+            file.CloseFile();
+        }
+
+        [TestMethod()]
         public void MdbGetCreatedTimeUtcTest()
         {
             var file = new OfficeFile(@"..\..\SampleFiles\Test.Mdb");
@@ -65,7 +76,7 @@ namespace OfficeFileProperties.FileAccessors.Dao.Tests
             var file = new OfficeFile(@"..\..\SampleFiles\Test.Mdb");
             file.OpenFile();
 
-            Assert.AreEqual(new DateTime(2016, 3, 1, 16, 10, 56, DateTimeKind.Utc), file.ModifiedTimeUtc);
+            Assert.AreEqual(new DateTime(2018, 9, 21, 15, 14, 35, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
             file.CloseFile();
         }

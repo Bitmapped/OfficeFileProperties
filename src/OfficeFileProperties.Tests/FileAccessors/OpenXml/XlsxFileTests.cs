@@ -36,6 +36,17 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
         }
 
         [TestMethod()]
+        public void XlsxGetCommentsTest()
+        {
+            var file = new XlsxFile(@"..\..\SampleFiles\Test.xlsx");
+            file.OpenFile();
+
+            Assert.AreEqual("Test Comments", file.Comments);
+
+            file.CloseFile();
+        }
+
+        [TestMethod()]
         public void XlsxGetCreatedTimeUtcTest()
         {
             var file = new XlsxFile(@"..\..\SampleFiles\Test.xlsx");
@@ -52,7 +63,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
             var file = new XlsxFile(@"..\..\SampleFiles\Test.xlsx");
             file.OpenFile();
 
-            Assert.AreEqual(new DateTime(2016, 3, 1, 3, 30, 33, DateTimeKind.Utc), file.ModifiedTimeUtc);
+            Assert.AreEqual(new DateTime(2018, 9, 21, 15, 15, 13, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
             file.CloseFile();
         }
