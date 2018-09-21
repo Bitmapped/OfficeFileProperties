@@ -11,7 +11,11 @@ For Word, Excel, and PowerPoint, this class manipulates file properties directly
 
 ## System requirements
 1. NET Framework 4.5
-2. Microsoft Access or the [Microsoft Access 2016 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=54920) installed on computers if Access databases will be used.
+2. One of the following installed on computer if Access databases will be used:
+    * Microsoft Access MSI-based install (not Microsoft Office 365 or click-to-run-based Microsoft Office version)
+    * [Microsoft Access 2016 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=54920) if Microsoft Office 365 or a click-to-run-based Microsoft Office version is not installed on the system
+    * [Microsoft Access 2010 Database Engine Redistributable](https://www.microsoft.com/en-us/download/Confirmation.aspx?ID=13255) if Microsoft Office 365 or a click-to-run-based Microsoft Office version is installed on the system due to compatibility issues with click-to-run
+
 
 ## NuGet availability
 This project is available on [NuGet](https://www.nuget.org/packages/OfficeFileProperties/).
