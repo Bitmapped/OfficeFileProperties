@@ -20,6 +20,11 @@ namespace OfficeFileProperties
         public string Company { get; internal set; }
 
         /// <summary>
+        /// Comments (description)
+        /// </summary>
+        public string Comments { get; internal set; }
+
+        /// <summary>
         /// Created Time in local time
         /// </summary>
         public DateTime? CreatedTimeLocal

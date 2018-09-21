@@ -317,6 +317,7 @@ namespace OfficeFileProperties.FileAccessors
             // Store properties.
             properties.Author = this.Author;
             properties.Company = this.Company;
+            properties.Comments = this.Comments;
             properties.CreatedTimeUtc = this.CreatedTimeUtc;
             properties.CustomProperties = this.CustomProperties;
             properties.ModifiedTimeUtc = this.ModifiedTimeUtc;
