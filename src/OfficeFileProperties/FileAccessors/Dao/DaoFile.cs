@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AccessDao = Microsoft.Office.Interop.Access.Dao;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using AccessDao = Microsoft.Office.Interop.Access.Dao;
 
 namespace OfficeFileProperties.FileAccessors.Dao
 {
@@ -14,9 +11,6 @@ namespace OfficeFileProperties.FileAccessors.Dao
     /// </summary>
     public class DaoFile : FileBase<AccessDao.Database>
     {
-
-        #region Fields
-
         /// <summary>
         /// Database engine
         /// </summary>
@@ -26,10 +20,6 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// Database workspace
         /// </summary>
         private readonly AccessDao.Workspace _dbWorkspace;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Constructor
@@ -42,17 +32,20 @@ namespace OfficeFileProperties.FileAccessors.Dao
             this._dbWorkspace = this._dbEngine.CreateWorkspace("", "admin", "", AccessDao.WorkspaceTypeEnum.dbUseJet);
         }
 
-        #endregion Constructors
+        /// <summary>
+        /// Indicator if the file is open.
+        /// </summary>
+        public override bool IsOpen => this.File != null;
 
-        #region Properties
+        /// <summary>
+        /// Indicator if the file is readable.
+        /// </summary>
+        public override bool IsReadable => this.File != null;
 
-        public override bool IsWritable
-        {
-            get
-            {
-                return this.File.Updatable;
-            }
-        }
+        /// <summary>
+        /// Indicator if the file is writable.
+        /// </summary>
+        public override bool IsWritable => this.File.Updatable;
 
         /// <summary>
         /// Author name
@@ -71,15 +64,13 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         return null;
                     }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
+
+                    // Rethrow the exception.
+                    throw ce;
                 }
             }
             set
@@ -95,7 +86,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         // Do nothing.
                     }
@@ -115,7 +106,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         // Do nothing.
                     }
@@ -145,15 +136,13 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         return null;
                     }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
+
+                    // Rethrow the exception.
+                    throw ce;
                 }
             }
             set
@@ -169,7 +158,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         // Do nothing.
                     }
@@ -189,7 +178,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         // Do nothing.
                     }
@@ -219,15 +208,13 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         return null;
                     }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
+
+                    // Rethrow the exception.
+                    throw ce;
                 }
             }
             set
@@ -243,7 +230,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         // Do nothing.
                     }
@@ -263,7 +250,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         // Do nothing.
                     }
@@ -291,20 +278,18 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 // Try to get time from SummaryInfo.
                 try
                 {
-                    createdTimeUtc = DateTime.Parse(this.File.Containers["Databases"].Documents["SummaryInfo"].Properties["DateCreated"].Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();                    
+                    createdTimeUtc = DateTime.Parse(this.File.Containers["Databases"].Documents["SummaryInfo"].Properties["DateCreated"].Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
                 }
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         return null;
                     }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
+
+                    // Rethrow the exception.
+                    throw ce;
                 }
 
                 // If time could not be obtained from SummaryInfo, try MSysDB.
@@ -317,21 +302,19 @@ namespace OfficeFileProperties.FileAccessors.Dao
                     catch (COMException ce)
                     {
                         // If conversion problem or value doesn't exist, return null
-                        if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                        if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                         {
                             return null;
                         }
-                        else
-                        {
-                            // Rethrow the exception.
-                            throw ce;
-                        }
+
+                        // Rethrow the exception.
+                        throw ce;
                     }
                 }
 
                 return createdTimeUtc;
             }
-            set { throw new InvalidOperationException(); }
+            set => throw new InvalidOperationException();
         }
 
         /// <summary>
@@ -354,15 +337,13 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         return null;
                     }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
+
+                    // Rethrow the exception.
+                    throw ce;
                 }
 
                 var customProperties = new Dictionary<string, object>();
@@ -391,14 +372,14 @@ namespace OfficeFileProperties.FileAccessors.Dao
 
                                 default:
                                     // Record property.
-                                    customProperties.Add(property.Name.ToString(), property.Value);
+                                    customProperties.Add(property.Name, property.Value);
                                     break;
                             }
                         }
                         catch (COMException ce)
                         {
                             // If conversion problem or value doesn't exist, return null
-                            if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                            if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                             {
                                 // Do nothing.
                             }
@@ -413,15 +394,13 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         return null;
                     }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
+
+                    // Rethrow the exception.
+                    throw ce;
                 }
 
                 return customProperties;
@@ -431,13 +410,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// <summary>
         /// Type of file.
         /// </summary>
-        public override FileTypeEnum FileType
-        {
-            get
-            {
-                return FileTypeEnum.MicrosoftAccess;
-            }
-        }
+        public override FileTypeEnum FileType => FileTypeEnum.MicrosoftAccess;
 
         /// <summary>
         /// Created date in UTC time
@@ -460,7 +433,8 @@ namespace OfficeFileProperties.FileAccessors.Dao
                         {
                             // Determine local time.
                             DateTime? propertyTimeUtc = null;
-                            try {
+                            try
+                            {
                                 propertyTimeUtc = DateTime.Parse(document.Properties["LastUpdated"].Value.ToString(), new CultureInfo("en-US"), DateTimeStyles.AssumeLocal).ToUniversalTime();
                             }
                             catch
@@ -472,45 +446,37 @@ namespace OfficeFileProperties.FileAccessors.Dao
                                 // Set modified time if it is still null.
                                 modifiedTimeUtc = modifiedTimeUtc ?? propertyTimeUtc;
 
-                                modifiedTimeUtc = (modifiedTimeUtc.Value < propertyTimeUtc.Value) ? propertyTimeUtc : modifiedTimeUtc;
+                                modifiedTimeUtc = modifiedTimeUtc.Value < propertyTimeUtc.Value ? propertyTimeUtc : modifiedTimeUtc;
                             }
-
                         }
                         catch (COMException ce)
                         {
                             // If conversion problem or value doesn't exist, return null
-                            if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                            if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                             {
                                 return null;
                             }
-                            else
-                            {
-                                // Rethrow the exception.
-                                throw ce;
-                            }
+
+                            // Rethrow the exception.
+                            throw ce;
                         }
                     }
                 }
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         return null;
                     }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
+
+                    // Rethrow the exception.
+                    throw ce;
                 }
 
                 return modifiedTimeUtc;
             }
-            set
-            {
-                throw new InvalidOperationException();
-            }
+            set => throw new InvalidOperationException();
         }
 
         /// <summary>
@@ -530,15 +496,13 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         return null;
                     }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
+
+                    // Rethrow the exception.
+                    throw ce;
                 }
             }
             set
@@ -554,7 +518,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         // Do nothing.
                     }
@@ -574,7 +538,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 catch (COMException ce)
                 {
                     // If conversion problem or value doesn't exist, return null
-                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
                     {
                         // Do nothing.
                     }
@@ -587,19 +551,12 @@ namespace OfficeFileProperties.FileAccessors.Dao
             }
         }
 
-        #endregion Properties
-
-        #region Methods
-
         /// <summary>
         /// Closes file.
         /// </summary>
         /// <param name="saveChanges"></param>
         public override void CloseFile(bool saveChanges = false)
         {
-            // Mark file as closed.
-            this.IsOpen = false;
-
             // Close file if it still is accessible.
             if (this.File != null)
             {
@@ -624,12 +581,6 @@ namespace OfficeFileProperties.FileAccessors.Dao
 
             // Open file.
             this.File = this._dbWorkspace.OpenDatabase(this.Filename, false, !writable, "");
-
-            // Mark file as open.
-            this.IsOpen = true;
         }
-
-        #endregion Methods
-
     }
 }

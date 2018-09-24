@@ -25,6 +25,21 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
         }
 
         [TestMethod()]
+        public void DocxSetAuthorTest()
+        {
+            var file = new DocxFile(@"..\..\SampleFiles\WriteTest.Docx");
+            var testValue = $"Test Author {DateTime.Now}";
+
+            file.OpenFile(true);
+            file.Author = testValue;
+            file.CloseFile();
+
+            file.OpenFile();
+            Assert.AreEqual(testValue, file.Author);
+            file.CloseFile();
+        }
+
+        [TestMethod()]
         public void DocxGetCompanyTest()
         {
             var file = new DocxFile(@"..\..\SampleFiles\Test.Docx");
@@ -32,6 +47,47 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
 
             Assert.AreEqual("Test Company", file.Company);
 
+            file.CloseFile();
+        }
+
+        [TestMethod()]
+        public void DocxSetCompanyTest()
+        {
+            var file = new DocxFile(@"..\..\SampleFiles\WriteTest.Docx");
+            var testValue = $"Test Company {DateTime.Now}";
+
+            file.OpenFile(true);
+            file.Company = testValue;
+            file.CloseFile();
+
+            file.OpenFile();
+            Assert.AreEqual(testValue, file.Company);
+            file.CloseFile();
+        }
+
+        [TestMethod()]
+        public void DocxGetTitleTest()
+        {
+            var file = new DocxFile(@"..\..\SampleFiles\Test.Docx");
+            file.OpenFile();
+
+            Assert.AreEqual("Test Title", file.Title);
+
+            file.CloseFile();
+        }
+
+        [TestMethod()]
+        public void DocxSetTitleTest()
+        {
+            var file = new DocxFile(@"..\..\SampleFiles\WriteTest.Docx");
+            var testValue = $"Test Title {DateTime.Now}";
+
+            file.OpenFile(true);
+            file.Title = testValue;
+            file.CloseFile();
+
+            file.OpenFile();
+            Assert.AreEqual(testValue, file.Title);
             file.CloseFile();
         }
 
@@ -47,6 +103,21 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
         }
 
         [TestMethod()]
+        public void DocxSetCommentsTest()
+        {
+            var file = new DocxFile(@"..\..\SampleFiles\WriteTest.Docx");
+            var testValue = $"Test Comments {DateTime.Now}";
+
+            file.OpenFile(true);
+            file.Comments = testValue;
+            file.CloseFile();
+
+            file.OpenFile();
+            Assert.AreEqual(testValue, file.Comments);
+            file.CloseFile();
+        }
+
+        [TestMethod()]
         public void DocxGetCreatedTimeUtcTest()
         {
             var file = new DocxFile(@"..\..\SampleFiles\Test.Docx");
@@ -58,6 +129,21 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
         }
 
         [TestMethod()]
+        public void DocxSetCreatedTimeUtcTest()
+        {
+            var file = new DocxFile(@"..\..\SampleFiles\WriteTest.Docx");
+            var testValue = DateTime.UtcNow.AddYears(1);
+
+            file.OpenFile(true);
+            file.CreatedTimeUtc = testValue;
+            file.CloseFile();
+
+            file.OpenFile();
+            Assert.AreEqual(testValue, file.CreatedTimeUtc);
+            file.CloseFile();
+        }
+
+        [TestMethod()]
         public void DocxGetModifiedTimeUtcTest()
         {
             var file = new DocxFile(@"..\..\SampleFiles\Test.Docx");
@@ -65,6 +151,21 @@ namespace OfficeFileProperties.FileAccessors.OpenXml.Tests
 
             Assert.AreEqual(new DateTime(2018, 9, 21, 15, 11, 0, DateTimeKind.Utc), file.ModifiedTimeUtc);
 
+            file.CloseFile();
+        }
+
+        [TestMethod()]
+        public void DocxSetModifiedTimeUtcTest()
+        {
+            var file = new DocxFile(@"..\..\SampleFiles\WriteTest.Docx");
+            var testValue = DateTime.UtcNow.AddYears(5);
+
+            file.OpenFile(true);
+            file.ModifiedTimeUtc = testValue;
+            file.CloseFile();
+
+            file.OpenFile();
+            Assert.AreEqual(testValue, file.ModifiedTimeUtc);
             file.CloseFile();
         }
 

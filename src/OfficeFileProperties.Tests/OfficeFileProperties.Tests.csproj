@@ -103,12 +103,24 @@
     <None Include="SampleFiles\Test.pptx" />
     <None Include="SampleFiles\Test.xls" />
     <None Include="SampleFiles\Test.xlsx" />
+    <None Include="SampleFiles\WriteTest.doc" />
+    <None Include="SampleFiles\WriteTest.docx" />
+    <None Include="SampleFiles\WriteTest.ppt" />
+    <None Include="SampleFiles\WriteTest.pptx" />
+    <None Include="SampleFiles\WriteTest.xls" />
+    <None Include="SampleFiles\WriteTest.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleFiles\Test.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SampleFiles\Test.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\WriteTest.accdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SampleFiles\WriteTest.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

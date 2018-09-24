@@ -46,9 +46,6 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         {
             // Open file.
             this.File = SpreadsheetDocument.Open(this.Filename, writable);
-
-            // Mark file as open.
-            this.IsOpen = true;
         }
 
 

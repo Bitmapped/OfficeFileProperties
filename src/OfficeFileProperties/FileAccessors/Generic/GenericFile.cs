@@ -41,9 +41,6 @@ namespace OfficeFileProperties.FileAccessors.Generic
         /// <param name="saveChanges"></param>
         public override void CloseFile(bool saveChanges = false)
         {
-            // Mark file as closed.
-            this.IsOpen = false;
-
             // Clear file object.
             this.File = null;
         }
@@ -51,6 +48,16 @@ namespace OfficeFileProperties.FileAccessors.Generic
         public override bool IsWritable
         {
             get { return false; }
+        }
+
+        public override bool IsOpen
+        {
+            get { return (this.File != null); }
+        }
+
+        public override bool IsReadable
+        {
+            get { return (this.File != null); }
         }
 
         /// <summary>
@@ -61,9 +68,6 @@ namespace OfficeFileProperties.FileAccessors.Generic
         {
             // Open file.
             this.File = new FileInfo(this.Filename);
-
-            // Mark file as open.
-            this.IsOpen = true;
         }
 
         /// <summary>

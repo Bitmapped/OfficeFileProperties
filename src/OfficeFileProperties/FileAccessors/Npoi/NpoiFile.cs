@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace OfficeFileProperties.FileAccessors.Npoi
 {
@@ -14,6 +15,11 @@ namespace OfficeFileProperties.FileAccessors.Npoi
     /// </summary>
     public class NpoiFile : FileBase<NpoiPropertiesOnlyDocument>
     {
+
+        /// <summary>
+        /// Stream for NPOI file
+        /// </summary>
+        private FileStream _fileStream;
 
         #region Constructors
 
@@ -203,9 +209,28 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// </summary>
         private SummaryInformation SummaryInformation { get; set; }
 
+        /// <summary>
+        /// Indicator if the file is writable.
+        /// </summary>
         public override bool IsWritable
         {
-            get { return false; }
+            get { return (this._fileStream != null && this._fileStream.CanWrite); }
+        }
+
+        /// <summary>
+        /// Indicator if the file is readable.
+        /// </summary>
+        public override bool IsReadable
+        {
+            get { return (this._fileStream != null && this._fileStream.CanRead); }
+        }
+
+        /// <summary>
+        /// Indicator if the file is open.
+        /// </summary>
+        public override bool IsOpen
+        {
+            get { return (this._fileStream != null); }
         }
 
         #endregion Properties
@@ -218,15 +243,15 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// <param name="saveChanges"></param>
         public override void CloseFile(bool saveChanges = false)
         {
-            // Mark file as closed.
-            this.IsOpen = false;
-
             // Clear properties.
             this.SummaryInformation = null;
             this.DocumentSummaryInformation = null;
 
             // Clear file object.
             this.File = null;
+
+            // Close stream.
+            this._fileStream.Close();
         }
 
         /// <summary>
@@ -236,10 +261,10 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         public override void OpenFile(bool writable = false)
         {
             // Open file stream.
-            var stream = new FileStream(this.Filename, FileMode.Open, FileAccess.Read);
+            this._fileStream = new FileStream(this.Filename, FileMode.Open, FileAccess.Read);
 
             // Open file system.
-            var fs = new POIFSFileSystem(stream);
+            var fs = new POIFSFileSystem(this._fileStream);
 
             // Open file.
             this.File = new NpoiPropertiesOnlyDocument(fs);
@@ -247,12 +272,6 @@ namespace OfficeFileProperties.FileAccessors.Npoi
             // Access properties.
             this.SummaryInformation = this.File.SummaryInformation;
             this.DocumentSummaryInformation = this.File.DocumentSummaryInformation;
-
-            // Close stream.
-            stream.Close();
-
-            // Mark file as open.
-            this.IsOpen = true;
         }
 
         #endregion Methods

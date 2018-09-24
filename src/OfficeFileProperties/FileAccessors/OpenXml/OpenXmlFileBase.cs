@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
-using NPOI.SS.Formula.Functions;
 
 namespace OfficeFileProperties.FileAccessors.OpenXml
 {
-    abstract public class OpenXmlFileBase<T> : FileBase<T> where T : OpenXmlPackage
+    public abstract class OpenXmlFileBase<T> : FileBase<T> where T : OpenXmlPackage
     {
         /// <summary>
         /// Constructor
@@ -17,6 +12,26 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         /// <param name="filename">Filename to open.</param>
         public OpenXmlFileBase(string filename) : base(filename)
         { }
+
+        /// <summary>
+        /// Determine if file is open.
+        /// </summary>
+        public override bool IsOpen
+        {
+            get
+            {
+                switch (this.File?.FileOpenAccess)
+                {
+                    case FileAccess.ReadWrite:
+                    case FileAccess.Write:
+                    case FileAccess.Read:
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        }
 
         /// <summary>
         /// Created date in UTC time
@@ -128,24 +143,41 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
             }
         }
 
+        /// <summary>
+        /// Indicator if the file is readable.
+        /// </summary>
+        public override bool IsReadable
+        {
+            get
+            {
+                switch (this.File?.FileOpenAccess)
+                {
+                    case FileAccess.Read:
+                    case FileAccess.ReadWrite:
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Indicator if the file is writable.
+        /// </summary>
         public override bool IsWritable
         {
             get
             {
-                // Check if file is open.
-                if (!this.IsOpen)
+                switch (this.File?.FileOpenAccess)
                 {
-                    return false;
-                }
+                    case FileAccess.ReadWrite:
+                    case FileAccess.Write:
+                        return true;
 
-                // See if file has been opened in a mode that allows writing.
-                if ((this.File.FileOpenAccess == FileAccess.ReadWrite) || (this.File.FileOpenAccess == FileAccess.Write))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    default:
+                        return false;
                 }
             }
         }
@@ -164,9 +196,6 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
                 // Mark file as not dirty.
                 this.IsDirty = false;
             }
-
-            // Mark file as closed.
-            this.IsOpen = false;
 
             // Close file if it still is accessible.
             if (this.File != null)

@@ -198,11 +198,6 @@ namespace OfficeFileProperties.FileAccessors
         public T File { get; protected set; }
 
         /// <summary>
-        /// Indicator if the file is currently open. Value used for internal tracking.
-        /// </summary>
-        private bool _isOpen = false;
-
-        /// <summary>
         /// Indicator if the file has been modified.
         /// </summary>
         private bool _isDirty = false;
@@ -226,21 +221,15 @@ namespace OfficeFileProperties.FileAccessors
         /// <summary>
         /// Indicator if the file is currently open
         /// </summary>
-        public bool IsOpen
-        {
-            get
-            {
-                // Ensure _isOpen is true and file accessor is not null.
-                return (this._isOpen && (this.File != null));
-            }
-            protected set
-            {
-                this._isOpen = value;
-            }
-        }
+        public abstract bool IsOpen { get; }
 
         /// <summary>
-        /// Determines if file is writable.
+        /// Indicator if the file is readable.
+        /// </summary>
+        abstract public bool IsReadable { get; }
+
+        /// <summary>
+        /// Indicator if the file is writable.
         /// </summary>
         abstract public bool IsWritable { get; }
 

@@ -47,9 +47,6 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         {
             // Open file.
             this.File = WordprocessingDocument.Open(this.Filename, writable);
-
-            // Mark file as open.
-            this.IsOpen = true;
         }
 
         /// <summary>
