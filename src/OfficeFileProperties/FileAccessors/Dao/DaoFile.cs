@@ -554,8 +554,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// <summary>
         /// Closes file.
         /// </summary>
-        /// <param name="saveChanges"></param>
-        public override void CloseFile(bool saveChanges = false)
+        public override void CloseFile()
         {
             // Close file if it still is accessible.
             if (this.File != null)

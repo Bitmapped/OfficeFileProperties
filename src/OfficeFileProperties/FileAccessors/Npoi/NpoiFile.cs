@@ -15,12 +15,6 @@ namespace OfficeFileProperties.FileAccessors.Npoi
     /// </summary>
     public class NpoiFile : FileBase<NpoiPropertiesOnlyDocument>
     {
-
-        /// <summary>
-        /// Stream for NPOI file
-        /// </summary>
-        private FileStream _fileStream;
-
         #region Constructors
 
         /// <summary>
@@ -41,10 +35,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 return this.SummaryInformation.Author;
             }
@@ -58,10 +49,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 return this.DocumentSummaryInformation.Company;
             }
@@ -75,10 +63,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 return this.SummaryInformation.Comments;
             }
@@ -91,6 +76,9 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         {
             get
             {
+                // Ensure file is open.
+                this.TestFileOpen();
+
                 if (this.SummaryInformation.CreateDateTime.HasValue)
                 {
                     return this.SummaryInformation.CreateDateTime.Value.ToUniversalTime();
@@ -110,10 +98,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 if (this.DocumentSummaryInformation.CustomProperties == null)
                 {
@@ -171,6 +156,9 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         {
             get
             {
+                // Ensure file is open.
+                this.TestFileOpen();
+
                 if (this.SummaryInformation.LastSaveDateTime.HasValue)
                 {
                     return this.SummaryInformation.LastSaveDateTime.Value.ToUniversalTime();
@@ -190,10 +178,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 return this.SummaryInformation.Title;
             }
@@ -214,7 +199,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// </summary>
         public override bool IsWritable
         {
-            get { return (this._fileStream != null && this._fileStream.CanWrite); }
+            get { return false; }
         }
 
         /// <summary>
@@ -222,7 +207,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// </summary>
         public override bool IsReadable
         {
-            get { return (this._fileStream != null && this._fileStream.CanRead); }
+            get { return (this.IsOpen); }
         }
 
         /// <summary>
@@ -230,7 +215,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// </summary>
         public override bool IsOpen
         {
-            get { return (this._fileStream != null); }
+            get { return (this.File != null); }
         }
 
         #endregion Properties
@@ -240,8 +225,7 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// <summary>
         /// Closes file.
         /// </summary>
-        /// <param name="saveChanges"></param>
-        public override void CloseFile(bool saveChanges = false)
+        public override void CloseFile()
         {
             // Clear properties.
             this.SummaryInformation = null;
@@ -249,9 +233,6 @@ namespace OfficeFileProperties.FileAccessors.Npoi
 
             // Clear file object.
             this.File = null;
-
-            // Close stream.
-            this._fileStream.Close();
         }
 
         /// <summary>
@@ -261,10 +242,10 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         public override void OpenFile(bool writable = false)
         {
             // Open file stream.
-            this._fileStream = new FileStream(this.Filename, FileMode.Open, FileAccess.Read);
+            var stream = new FileStream(this.Filename, FileMode.Open, FileAccess.Read);
 
             // Open file system.
-            var fs = new POIFSFileSystem(this._fileStream);
+            var fs = new POIFSFileSystem(stream);
 
             // Open file.
             this.File = new NpoiPropertiesOnlyDocument(fs);

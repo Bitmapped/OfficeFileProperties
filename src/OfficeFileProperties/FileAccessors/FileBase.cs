@@ -1,10 +1,7 @@
-﻿using OfficeFileProperties.Support;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OfficeFileProperties.Support;
 
 namespace OfficeFileProperties.FileAccessors
 {
@@ -14,46 +11,6 @@ namespace OfficeFileProperties.FileAccessors
     /// <typeparam name="T">Type of object for accessing files.</typeparam>
     public abstract class FileBase<T> : IFileBase, IDisposable
     {
-        #region Fields
-
-        /// <summary>
-        /// Name of file
-        /// </summary>
-        private readonly string _filename;
-
-        /// <summary>
-        /// Determine if disposal has already occurred.
-        /// </summary>
-        private bool _disposed = false;
-
-        /// <summary>
-        /// Dispose of object.
-        /// </summary>
-        /// <param name="disposing">Dispose of managed resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // Close file
-                    this.CloseFile();
-                }
-
-                _disposed = true;
-            }
-        }
-
-        /// <summary>
-        /// Dispose of object
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        #endregion Fields
-
         #region Constructors
 
         /// <summary>
@@ -65,7 +22,7 @@ namespace OfficeFileProperties.FileAccessors
             // Ensure file exists.
             if (!System.IO.File.Exists(filename))
             {
-                throw new FileNotFoundException(String.Format("File {0} does not exist.", filename));
+                throw new FileNotFoundException(string.Format("File {0} does not exist.", filename));
             }
 
             // Store filename.
@@ -74,6 +31,46 @@ namespace OfficeFileProperties.FileAccessors
 
         #endregion Constructors
 
+        #region Fields
+
+        /// <summary>
+        /// Name of file
+        /// </summary>
+        private readonly string _filename;
+
+        /// <summary>
+        /// Determine if disposal has already occurred.
+        /// </summary>
+        private bool _disposed;
+
+        /// <summary>
+        /// Dispose of object.
+        /// </summary>
+        /// <param name="disposing">Dispose of managed resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    // Close file
+                    this.CloseFile();
+                }
+
+                this._disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Dispose of object
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        #endregion Fields
+
         #region Properties
 
         /// <summary>
@@ -81,14 +78,8 @@ namespace OfficeFileProperties.FileAccessors
         /// </summary>
         public virtual string Author
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
@@ -96,14 +87,8 @@ namespace OfficeFileProperties.FileAccessors
         /// </summary>
         public virtual string Company
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
@@ -111,14 +96,8 @@ namespace OfficeFileProperties.FileAccessors
         /// </summary>
         public virtual string Comments
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
@@ -126,28 +105,8 @@ namespace OfficeFileProperties.FileAccessors
         /// </summary>
         public virtual DateTime? CreatedTimeLocal
         {
-            get
-            {
-                if (CreatedTimeUtc.HasValue)
-                {
-                    return CreatedTimeUtc.Value.ToLocalTime();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            set
-            {
-                if (value.HasValue)
-                {
-                    CreatedTimeUtc = value.Value.ToUniversalTime();
-                }
-                else
-                {
-                    CreatedTimeUtc = null;
-                }
-            }
+            get => this.CreatedTimeUtc?.ToLocalTime();
+            set => this.CreatedTimeUtc = value?.ToUniversalTime();
         }
 
         /// <summary>
@@ -155,14 +114,8 @@ namespace OfficeFileProperties.FileAccessors
         /// </summary>
         public virtual DateTime? CreatedTimeUtc
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
 
@@ -171,26 +124,14 @@ namespace OfficeFileProperties.FileAccessors
         /// </summary>
         public virtual IDictionary<string, object> CustomProperties
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
         /// Serialize Custom Properties as a string.
         /// </summary>
-        public virtual string CustomPropertiesString
-        {
-            get
-            {
-                return CustomProperties.Serialize();
-            }
-        }
+        public virtual string CustomPropertiesString => this.CustomProperties.Serialize();
 
         /// <summary>
         /// Accessor for underlying file object
@@ -198,20 +139,9 @@ namespace OfficeFileProperties.FileAccessors
         public T File { get; protected set; }
 
         /// <summary>
-        /// Indicator if the file has been modified.
-        /// </summary>
-        private bool _isDirty = false;
-
-        /// <summary>
         /// Filename
         /// </summary>
-        public string Filename
-        {
-            get
-            {
-                return this._filename;
-            }
-        }
+        public string Filename => this._filename;
 
         /// <summary>
         /// Type of file
@@ -226,57 +156,20 @@ namespace OfficeFileProperties.FileAccessors
         /// <summary>
         /// Indicator if the file is readable.
         /// </summary>
-        abstract public bool IsReadable { get; }
+        public abstract bool IsReadable { get; }
 
         /// <summary>
         /// Indicator if the file is writable.
         /// </summary>
-        abstract public bool IsWritable { get; }
-
-        /// <summary>
-        /// Determines if file has been modified.
-        /// </summary>
-        public bool IsDirty
-        {
-            get => (this.IsWritable && this._isDirty);
-            protected set
-            {
-                // Check to see if we can set this.
-                if (this.IsWritable)
-                {
-                    this._isDirty = value;
-                }
-            }
-
-        }
+        public abstract bool IsWritable { get; }
 
         /// <summary>
         /// Modified Time in local time
         /// </summary>
         public virtual DateTime? ModifiedTimeLocal
         {
-            get
-            {
-                if (ModifiedTimeUtc.HasValue)
-                {
-                    return ModifiedTimeUtc.Value.ToLocalTime();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            set
-            {
-                if (value.HasValue)
-                {
-                    ModifiedTimeUtc = value.Value.ToUniversalTime();
-                }
-                else
-                {
-                    ModifiedTimeUtc = null;
-                }
-            }
+            get => this.ModifiedTimeUtc?.ToLocalTime();
+            set => this.ModifiedTimeUtc = value?.ToUniversalTime();
         }
 
         /// <summary>
@@ -284,14 +177,8 @@ namespace OfficeFileProperties.FileAccessors
         /// </summary>
         public virtual DateTime? ModifiedTimeUtc
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
@@ -299,14 +186,8 @@ namespace OfficeFileProperties.FileAccessors
         /// </summary>
         public virtual string Title
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         #endregion Properties
@@ -316,8 +197,7 @@ namespace OfficeFileProperties.FileAccessors
         /// <summary>
         /// Closes file.
         /// </summary>
-        /// <param name="saveChanges">Save changes to this file.</param>
-        public abstract void CloseFile(bool saveChanges = false);
+        public abstract void CloseFile();
 
         /// <summary>
         /// Gets FileProperties object loaded with properties for current file.
@@ -397,6 +277,5 @@ namespace OfficeFileProperties.FileAccessors
         public abstract void OpenFile(bool writable = false);
 
         #endregion Methods
-
     }
 }

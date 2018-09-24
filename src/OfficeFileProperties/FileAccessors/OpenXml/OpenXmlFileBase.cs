@@ -185,18 +185,8 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         /// <summary>
         /// Closes file.
         /// </summary>
-        /// <param name="saveChanges"></param>
-        public override void CloseFile(bool saveChanges = false)
+        public override void CloseFile()
         {
-            // If file has changes, is writable, and is to be saved, save it.
-            if (saveChanges && this.IsWritable && this.IsDirty)
-            {
-                this.File.Save();
-
-                // Mark file as not dirty.
-                this.IsDirty = false;
-            }
-
             // Close file if it still is accessible.
             if (this.File != null)
             {

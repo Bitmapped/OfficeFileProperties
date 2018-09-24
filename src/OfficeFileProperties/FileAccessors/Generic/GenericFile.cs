@@ -30,8 +30,7 @@ namespace OfficeFileProperties.FileAccessors.Generic
         /// <summary>
         /// Closes file.
         /// </summary>
-        /// <param name="saveChanges"></param>
-        public override void CloseFile(bool saveChanges = false)
+        public override void CloseFile()
         {
             // Clear file object.
             this.File = null;

@@ -1,38 +1,28 @@
-﻿using OfficeFileProperties.FileAccessors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OfficeFileProperties.FileAccessors;
+using OfficeFileProperties.FileAccessors.Dao;
+using OfficeFileProperties.FileAccessors.Generic;
+using OfficeFileProperties.FileAccessors.Npoi;
+using OfficeFileProperties.FileAccessors.OpenXml;
 
 namespace OfficeFileProperties
 {
     public class OfficeFile : IFile, IDisposable
     {
-
-        #region Fields
-
-        /// <summary>
-        /// Stores file accessor used with this object.
-        /// </summary>
-        private readonly IFileBase _fileAccessor;
-
-        /// <summary>
-        /// Determine if disposal has already occurred.
-        /// </summary>
-        private bool _disposed = false;
-
-        #endregion Fields
-
         #region Constructors
 
+        /// <summary>
+        /// Accesses Microsoft Office files.
+        /// </summary>
+        /// <param name="filename">Filename to open</param>
         public OfficeFile(string filename)
         {
             // Ensure file exists.
-            if (!System.IO.File.Exists(filename))
+            if (!File.Exists(filename))
             {
-                throw new FileNotFoundException(String.Format("File {0} does not exist.", filename));
+                throw new FileNotFoundException($"File {filename} does not exist.");
             }
 
             // Get file info for new file.
@@ -47,7 +37,7 @@ namespace OfficeFileProperties
                     case ".accdb":
                     case ".mdb":
                         // Use Dao.
-                        this._fileAccessor = new FileAccessors.Dao.DaoFile(filename);
+                        this._fileAccessor = new DaoFile(filename);
                         break;
 
                     case ".doc":
@@ -58,7 +48,7 @@ namespace OfficeFileProperties
                     case ".xlm":
                     case ".xlt":
                         // Use Npoi.
-                        this._fileAccessor = new FileAccessors.Npoi.NpoiFile(filename);
+                        this._fileAccessor = new NpoiFile(filename);
                         break;
 
                     case ".docx":
@@ -66,7 +56,7 @@ namespace OfficeFileProperties
                     case ".dotx":
                     case ".dotm":
                         // Use Docx.
-                        this._fileAccessor = new FileAccessors.OpenXml.DocxFile(filename);
+                        this._fileAccessor = new DocxFile(filename);
                         break;
 
                     case ".pptx":
@@ -74,21 +64,20 @@ namespace OfficeFileProperties
                     case ".potx":
                     case ".potm":
                         // Use Pptx.
-                        this._fileAccessor = new FileAccessors.OpenXml.PptxFile(filename);
+                        this._fileAccessor = new PptxFile(filename);
                         break;
 
                     case ".xlsx":
                     case ".xlsm":
                     case ".xlst":
                         // Use Xlsx.
-                        this._fileAccessor = new FileAccessors.OpenXml.XlsxFile(filename);
+                        this._fileAccessor = new XlsxFile(filename);
                         break;
 
                     default:
                         // Use generic.
-                        this._fileAccessor = new FileAccessors.Generic.GenericFile(filename);
+                        this._fileAccessor = new GenericFile(filename);
                         break;
-
                 }
             }
             catch (Exception ex)
@@ -96,16 +85,30 @@ namespace OfficeFileProperties
                 // Try using generic.
                 try
                 {
-                    this._fileAccessor = new FileAccessors.Generic.GenericFile(filename);
+                    this._fileAccessor = new GenericFile(filename);
                 }
                 catch
                 {
-                    throw new Exception(String.Format("Cannot get properties from file {0}.", filename));
+                    throw new Exception($"Cannot get properties from file {filename}.");
                 }
             }
         }
 
         #endregion Constructors
+
+        #region Fields
+
+        /// <summary>
+        /// Stores file accessor used with this object.
+        /// </summary>
+        private readonly IFileBase _fileAccessor;
+
+        /// <summary>
+        /// Determine if disposal has already occurred.
+        /// </summary>
+        private bool _disposed;
+
+        #endregion Fields
 
         #region Properties
 
@@ -114,15 +117,9 @@ namespace OfficeFileProperties
         /// </summary>
         public string Author
         {
-            get
-            {
-                return FileAccessor.Author;
-            }
+            get => this.FileAccessor.Author;
 
-            set
-            {
-                FileAccessor.Author = value;
-            }
+            set => this.FileAccessor.Author = value;
         }
 
         /// <summary>
@@ -130,15 +127,9 @@ namespace OfficeFileProperties
         /// </summary>
         public string Company
         {
-            get
-            {
-                return FileAccessor.Company;
-            }
+            get => this.FileAccessor.Company;
 
-            set
-            {
-                FileAccessor.Company = value;
-            }
+            set => this.FileAccessor.Company = value;
         }
 
         /// <summary>
@@ -146,15 +137,9 @@ namespace OfficeFileProperties
         /// </summary>
         public string Comments
         {
-            get
-            {
-                return FileAccessor.Comments;
-            }
+            get => this.FileAccessor.Comments;
 
-            set
-            {
-                FileAccessor.Comments = value;
-            }
+            set => this.FileAccessor.Comments = value;
         }
 
         /// <summary>
@@ -162,15 +147,9 @@ namespace OfficeFileProperties
         /// </summary>
         public DateTime? CreatedTimeLocal
         {
-            get
-            {
-                return FileAccessor.CreatedTimeLocal;
-            }
+            get => this.FileAccessor.CreatedTimeLocal;
 
-            set
-            {
-                FileAccessor.CreatedTimeLocal = value;
-            }
+            set => this.FileAccessor.CreatedTimeLocal = value;
         }
 
         /// <summary>
@@ -178,97 +157,49 @@ namespace OfficeFileProperties
         /// </summary>
         public DateTime? CreatedTimeUtc
         {
-            get
-            {
-                return FileAccessor.CreatedTimeUtc;
-            }
+            get => this.FileAccessor.CreatedTimeUtc;
 
-            set
-            {
-                FileAccessor.CreatedTimeUtc = value;
-            }
+            set => this.FileAccessor.CreatedTimeUtc = value;
         }
 
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public IDictionary<string, object> CustomProperties
-        {
-            get
-            {
-                return FileAccessor.CustomProperties;
-            }
-        }
+        public IDictionary<string, object> CustomProperties => this.FileAccessor.CustomProperties;
 
         /// <summary>
         /// Serialize Custom Properties as a string.
         /// </summary>
-        public string CustomPropertiesString
-        {
-            get
-            {
-                return FileAccessor.CustomPropertiesString;
-            }
-        }
+        public string CustomPropertiesString => this.FileAccessor.CustomPropertiesString;
 
         /// <summary>
         /// Accessor for manipulating files
         /// </summary>
-        public IFileBase FileAccessor
-        {
-            get
-            {
-                return this._fileAccessor;
-            }
-        }
+        public IFileBase FileAccessor => this._fileAccessor;
 
         /// <summary>
         /// Filename
         /// </summary>
-        public string Filename
-        {
-            get
-            {
-                return FileAccessor.Filename;
-            }
-        }
+        public string Filename => this.FileAccessor.Filename;
 
         /// <summary>
         /// Type of file
         /// </summary>
-        public FileTypeEnum FileType
-        {
-            get
-            {
-                return FileAccessor.FileType;
-            }
-        }
+        public FileTypeEnum FileType => this.FileAccessor.FileType;
 
         /// <summary>
         /// Indicator if the file is currently open
         /// </summary>
-        public bool IsOpen
-        {
-            get
-            {
-                return FileAccessor.IsOpen;
-            }
-        }
+        public bool IsOpen => this.FileAccessor.IsOpen;
 
         /// <summary>
         /// Modified Time in local time
         /// </summary>
         public DateTime? ModifiedTimeLocal
         {
-            get
-            {
-                return FileAccessor.ModifiedTimeLocal;
-            }
+            get => this.FileAccessor.ModifiedTimeLocal;
 
-            set
-            {
-                FileAccessor.ModifiedTimeLocal = value;
-            }
+            set => this.FileAccessor.ModifiedTimeLocal = value;
         }
 
         /// <summary>
@@ -276,15 +207,9 @@ namespace OfficeFileProperties
         /// </summary>
         public DateTime? ModifiedTimeUtc
         {
-            get
-            {
-                return FileAccessor.ModifiedTimeUtc;
-            }
+            get => this.FileAccessor.ModifiedTimeUtc;
 
-            set
-            {
-                FileAccessor.ModifiedTimeUtc = value;
-            }
+            set => this.FileAccessor.ModifiedTimeUtc = value;
         }
 
         /// <summary>
@@ -292,15 +217,9 @@ namespace OfficeFileProperties
         /// </summary>
         public string Title
         {
-            get
-            {
-                return FileAccessor.Title;
-            }
+            get => this.FileAccessor.Title;
 
-            set
-            {
-                FileAccessor.Title = value;
-            }
+            set => this.FileAccessor.Title = value;
         }
 
         #endregion Properties
@@ -310,10 +229,9 @@ namespace OfficeFileProperties
         /// <summary>
         /// Closes file.
         /// </summary>
-        /// <param name="saveChanges"></param>
-        public void CloseFile(bool saveChanges = false)
+        public void CloseFile()
         {
-            FileAccessor.CloseFile();
+            this.FileAccessor.CloseFile();
         }
 
         /// <summary>
@@ -321,7 +239,7 @@ namespace OfficeFileProperties
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
         }
 
         /// <summary>
@@ -330,16 +248,16 @@ namespace OfficeFileProperties
         /// <returns>Loaded FileProperties object</returns>
         public FileProperties GetFileProperties()
         {
-            return FileAccessor.GetFileProperties();
+            return this.FileAccessor.GetFileProperties();
         }
 
         /// <summary>
         /// Opens file.
         /// </summary>
-        /// <param name="writable"></param>
+        /// <param name="writable">Open file in writable mode</param>
         public void OpenFile(bool writable = false)
         {
-            FileAccessor.OpenFile();
+            this.FileAccessor.OpenFile(writable);
         }
 
         /// <summary>
@@ -348,7 +266,7 @@ namespace OfficeFileProperties
         /// <param name="disposing">Dispose of managed resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!this._disposed)
             {
                 if (disposing)
                 {
@@ -356,7 +274,7 @@ namespace OfficeFileProperties
                     this.CloseFile();
                 }
 
-                _disposed = true;
+                this._disposed = true;
             }
         }
 

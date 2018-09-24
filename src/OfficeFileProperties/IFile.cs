@@ -82,8 +82,7 @@ namespace OfficeFileProperties
         /// <summary>
         /// Closes file.
         /// </summary>
-        /// <param name="saveChanges"></param>
-        void CloseFile(bool saveChanges = false);
+        void CloseFile();
 
         /// <summary>
         /// Gets FileProperties object loaded with properties for current file.
