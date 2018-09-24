@@ -14,70 +14,6 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         { }
 
         /// <summary>
-        /// Determine if file is open.
-        /// </summary>
-        public override bool IsOpen
-        {
-            get
-            {
-                switch (this.File?.FileOpenAccess)
-                {
-                    case FileAccess.ReadWrite:
-                    case FileAccess.Write:
-                    case FileAccess.Read:
-                        return true;
-
-                    default:
-                        return false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Created date in UTC time
-        /// </summary>
-        public override DateTime? CreatedTimeUtc
-        {
-            get
-            {
-                // Ensure file is open.
-                this.TestFileOpen();
-
-                return this.File.PackageProperties.Created?.ToUniversalTime();
-            }
-            set
-            {
-                // Ensure file is writable.
-                this.TestFileWritable();
-
-                // Set created time.
-                this.File.PackageProperties.Created = value;
-            }
-        }
-
-        /// <summary>
-        /// Created date in UTC time
-        /// </summary>
-        public override DateTime? ModifiedTimeUtc
-        {
-            get
-            {
-                // Ensure file is open.
-                this.TestFileOpen();
-
-                return this.File.PackageProperties.Modified?.ToUniversalTime();
-            }
-            set
-            {
-                // Ensure file is writable.
-                this.TestFileWritable();
-
-                // Set modified time.
-                this.File.PackageProperties.Modified = value;
-            }
-        }
-
-        /// <summary>
         /// Author name
         /// </summary>
         public override string Author
@@ -122,24 +58,44 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         }
 
         /// <summary>
-        /// Title
+        /// Created date in UTC time
         /// </summary>
-        public override string Title
+        public override DateTime? CreatedTimeUtc
         {
             get
             {
                 // Ensure file is open.
                 this.TestFileOpen();
 
-                return this.File.PackageProperties.Title;
+                return this.File.PackageProperties.Created?.ToUniversalTime();
             }
             set
             {
                 // Ensure file is writable.
                 this.TestFileWritable();
 
-                // Set title.
-                this.File.PackageProperties.Title = value;
+                // Set created time.
+                this.File.PackageProperties.Created = value;
+            }
+        }
+
+        /// <summary>
+        /// Determine if file is open.
+        /// </summary>
+        public override bool IsOpen
+        {
+            get
+            {
+                switch (this.File?.FileOpenAccess)
+                {
+                    case FileAccess.ReadWrite:
+                    case FileAccess.Write:
+                    case FileAccess.Read:
+                        return true;
+
+                    default:
+                        return false;
+                }
             }
         }
 
@@ -179,6 +135,50 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
                     default:
                         return false;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Created date in UTC time
+        /// </summary>
+        public override DateTime? ModifiedTimeUtc
+        {
+            get
+            {
+                // Ensure file is open.
+                this.TestFileOpen();
+
+                return this.File.PackageProperties.Modified?.ToUniversalTime();
+            }
+            set
+            {
+                // Ensure file is writable.
+                this.TestFileWritable();
+
+                // Set modified time.
+                this.File.PackageProperties.Modified = value;
+            }
+        }
+
+        /// <summary>
+        /// Title
+        /// </summary>
+        public override string Title
+        {
+            get
+            {
+                // Ensure file is open.
+                this.TestFileOpen();
+
+                return this.File.PackageProperties.Title;
+            }
+            set
+            {
+                // Ensure file is writable.
+                this.TestFileWritable();
+
+                // Set title.
+                this.File.PackageProperties.Title = value;
             }
         }
 

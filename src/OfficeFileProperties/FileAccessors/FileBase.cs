@@ -360,6 +360,9 @@ namespace OfficeFileProperties.FileAccessors
             }
         }
 
+        /// <summary>
+        /// Test to ensure file is writable.
+        /// </summary>
         public void TestFileWritable()
         {
             // Test to ensure file is open.
@@ -369,6 +372,21 @@ namespace OfficeFileProperties.FileAccessors
             if (!this.IsWritable)
             {
                 throw new InvalidOperationException("File is not writable.");
+            }
+        }
+
+        /// <summary>
+        /// Test to ensure file is readable.
+        /// </summary>
+        public void TestFileRedable()
+        {
+            // Test to ensure file is open.
+            this.TestFileOpen();
+
+            // Throw exception if file is not writable.
+            if (!this.IsReadable)
+            {
+                throw new InvalidOperationException("File is not readable.");
             }
         }
 

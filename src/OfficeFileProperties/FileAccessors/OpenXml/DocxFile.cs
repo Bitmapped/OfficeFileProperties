@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.CustomProperties;
 using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Packaging;
+using Properties = DocumentFormat.OpenXml.ExtendedProperties.Properties;
 
 namespace OfficeFileProperties.FileAccessors.OpenXml
 {
@@ -22,22 +21,15 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         /// <param name="filename">Filename to open.</param>
         public DocxFile(string filename) : base(filename)
         { }
+
         #endregion Constructors
 
         /// <summary>
         /// Type of file.
         /// </summary>
-        public override FileTypeEnum FileType
-        {
-            get
-            {
-                return FileTypeEnum.MicrosoftWord;
-            }
-        }
+        public override FileTypeEnum FileType => FileTypeEnum.MicrosoftWord;
 
         #region Methods
-
-        
 
         /// <summary>
         /// Opens file.
@@ -75,7 +67,7 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
                 // Add properties part if it does not exist.
                 if (this.File.ExtendedFilePropertiesPart.Properties == null)
                 {
-                    this.File.ExtendedFilePropertiesPart.Properties = new DocumentFormat.OpenXml.ExtendedProperties.Properties();
+                    this.File.ExtendedFilePropertiesPart.Properties = new Properties();
                 }
 
                 this.File.ExtendedFilePropertiesPart.Properties.Company = new Company(value);
@@ -98,17 +90,12 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
                 }
 
                 var customProperties = this.File.CustomFilePropertiesPart.Properties
-                                            .Select(p => (CustomDocumentProperty)p)
-                                            .ToDictionary<CustomDocumentProperty, string, object>(cp => cp.Name.Value, cp => cp.InnerText);
+                                           .Select(p => (CustomDocumentProperty) p)
+                                           .ToDictionary<CustomDocumentProperty, string, object>(cp => cp.Name.Value, cp => cp.InnerText);
 
                 return customProperties;
             }
-            set
-            {
-                // Sample code at https://docs.microsoft.com/en-us/office/open-xml/how-to-set-a-custom-property-in-a-word-processing-document#sample-code
-
-                throw new NotImplementedException();
-            }
+            set => throw new NotImplementedException();
         }
 
         #endregion Methods

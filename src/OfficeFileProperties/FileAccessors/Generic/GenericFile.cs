@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace OfficeFileProperties.FileAccessors.Generic
@@ -20,18 +17,13 @@ namespace OfficeFileProperties.FileAccessors.Generic
         /// <param name="filename">Filename to open.</param>
         public GenericFile(string filename) : base(filename)
         { }
+
         #endregion Constructors
 
         /// <summary>
         /// Type of file.
         /// </summary>
-        public override FileTypeEnum FileType
-        {
-            get
-            {
-                return FileTypeEnum.OtherType;
-            }
-        }
+        public override FileTypeEnum FileType => FileTypeEnum.OtherType;
 
         #region Methods
 
@@ -45,20 +37,11 @@ namespace OfficeFileProperties.FileAccessors.Generic
             this.File = null;
         }
 
-        public override bool IsWritable
-        {
-            get { return false; }
-        }
+        public override bool IsWritable => false;
 
-        public override bool IsOpen
-        {
-            get { return (this.File != null); }
-        }
+        public override bool IsOpen => this.File != null;
 
-        public override bool IsReadable
-        {
-            get { return (this.File != null); }
-        }
+        public override bool IsReadable => this.File != null;
 
         /// <summary>
         /// Opens file.
@@ -73,79 +56,37 @@ namespace OfficeFileProperties.FileAccessors.Generic
         /// <summary>
         /// Created date in UTC time
         /// </summary>
-        public override DateTime? CreatedTimeUtc
-        {
-            get
-            {
-                return this.File.CreationTimeUtc;
-            }
-        }
+        public override DateTime? CreatedTimeUtc => this.File.CreationTimeUtc;
 
         /// <summary>
         /// Created date in UTC time
         /// </summary>
-        public override DateTime? ModifiedTimeUtc
-        {
-            get
-            {
-                return this.File.LastWriteTimeUtc;
-            }
-        }
+        public override DateTime? ModifiedTimeUtc => this.File.LastWriteTimeUtc;
 
         /// <summary>
         /// Author name
         /// </summary>
-        public override string Author
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override string Author => null;
 
         /// <summary>
         /// Company name
         /// </summary>
-        public override string Company
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override string Company => null;
 
         /// <summary>
         /// Comments (description)
         /// </summary>
-        public override string Comments
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override string Comments => null;
 
         /// <summary>
         /// Title
         /// </summary>
-        public override string Title
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override string Title => null;
 
         /// <summary>
         /// Custom Properties
         /// </summary>
-        public override IDictionary<string, object> CustomProperties
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override IDictionary<string, object> CustomProperties => null;
 
         #endregion Methods
     }

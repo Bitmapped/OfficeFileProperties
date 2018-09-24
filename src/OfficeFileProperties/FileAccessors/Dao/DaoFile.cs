@@ -33,21 +33,6 @@ namespace OfficeFileProperties.FileAccessors.Dao
         }
 
         /// <summary>
-        /// Indicator if the file is open.
-        /// </summary>
-        public override bool IsOpen => this.File != null;
-
-        /// <summary>
-        /// Indicator if the file is readable.
-        /// </summary>
-        public override bool IsReadable => this.File != null;
-
-        /// <summary>
-        /// Indicator if the file is writable.
-        /// </summary>
-        public override bool IsWritable => this.File.Updatable;
-
-        /// <summary>
         /// Author name
         /// </summary>
         public override string Author
@@ -120,78 +105,6 @@ namespace OfficeFileProperties.FileAccessors.Dao
         }
 
         /// <summary>
-        /// Company name
-        /// </summary>
-        public override string Company
-        {
-            get
-            {
-                // Ensure file is open.
-                this.TestFileOpen();
-
-                try
-                {
-                    return this.File.Containers["Databases"].Documents["SummaryInfo"].Properties["Company"].Value.ToString();
-                }
-                catch (COMException ce)
-                {
-                    // If conversion problem or value doesn't exist, return null
-                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
-                    {
-                        return null;
-                    }
-
-                    // Rethrow the exception.
-                    throw ce;
-                }
-            }
-            set
-            {
-                // Ensure file is writable.
-                this.TestFileWritable();
-
-                // Try to delete existing property.
-                try
-                {
-                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Delete("Company");
-                }
-                catch (COMException ce)
-                {
-                    // If conversion problem or value doesn't exist, return null
-                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
-                    {
-                        // Do nothing.
-                    }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
-                }
-
-                // Try to set new property.
-                try
-                {
-                    var prop = this.File.CreateProperty("Company", AccessDao.DataTypeEnum.dbText, value, true);
-                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Append(prop);
-                }
-                catch (COMException ce)
-                {
-                    // If conversion problem or value doesn't exist, return null
-                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
-                    {
-                        // Do nothing.
-                    }
-                    else
-                    {
-                        // Rethrow the exception.
-                        throw ce;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Comments (description)
         /// </summary>
         public override string Comments
@@ -245,6 +158,78 @@ namespace OfficeFileProperties.FileAccessors.Dao
                 try
                 {
                     var prop = this.File.CreateProperty("Comments", AccessDao.DataTypeEnum.dbText, value, true);
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Append(prop);
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Company name
+        /// </summary>
+        public override string Company
+        {
+            get
+            {
+                // Ensure file is open.
+                this.TestFileOpen();
+
+                try
+                {
+                    return this.File.Containers["Databases"].Documents["SummaryInfo"].Properties["Company"].Value.ToString();
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
+                    {
+                        return null;
+                    }
+
+                    // Rethrow the exception.
+                    throw ce;
+                }
+            }
+            set
+            {
+                // Ensure file is writable.
+                this.TestFileWritable();
+
+                // Try to delete existing property.
+                try
+                {
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Delete("Company");
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if ((uint) ce.ErrorCode == 0x800A0D1E || (uint) ce.ErrorCode == 0x800A0CC6 || (uint) ce.ErrorCode == 0x800A0CC1)
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+
+                // Try to set new property.
+                try
+                {
+                    var prop = this.File.CreateProperty("Company", AccessDao.DataTypeEnum.dbText, value, true);
                     this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Append(prop);
                 }
                 catch (COMException ce)
@@ -411,6 +396,21 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// Type of file.
         /// </summary>
         public override FileTypeEnum FileType => FileTypeEnum.MicrosoftAccess;
+
+        /// <summary>
+        /// Indicator if the file is open.
+        /// </summary>
+        public override bool IsOpen => this.File != null;
+
+        /// <summary>
+        /// Indicator if the file is readable.
+        /// </summary>
+        public override bool IsReadable => this.File != null;
+
+        /// <summary>
+        /// Indicator if the file is writable.
+        /// </summary>
+        public override bool IsWritable => this.File.Updatable;
 
         /// <summary>
         /// Created date in UTC time
