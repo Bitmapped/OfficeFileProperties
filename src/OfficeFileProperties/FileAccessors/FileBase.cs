@@ -37,7 +37,7 @@ namespace OfficeFileProperties.FileAccessors
                 if (disposing)
                 {
                     // Close file
-                    CloseFile();
+                    this.CloseFile();
                 }
 
                 _disposed = true;
@@ -175,6 +175,10 @@ namespace OfficeFileProperties.FileAccessors
             {
                 throw new NotImplementedException();
             }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -197,6 +201,11 @@ namespace OfficeFileProperties.FileAccessors
         /// Indicator if the file is currently open. Value used for internal tracking.
         /// </summary>
         private bool _isOpen = false;
+
+        /// <summary>
+        /// Indicator if the file has been modified.
+        /// </summary>
+        private bool _isDirty = false;
 
         /// <summary>
         /// Filename
@@ -228,6 +237,28 @@ namespace OfficeFileProperties.FileAccessors
             {
                 this._isOpen = value;
             }
+        }
+
+        /// <summary>
+        /// Determines if file is writable.
+        /// </summary>
+        abstract public bool IsWritable { get; }
+
+        /// <summary>
+        /// Determines if file has been modified.
+        /// </summary>
+        public bool IsDirty
+        {
+            get => (this.IsWritable && this._isDirty);
+            protected set
+            {
+                // Check to see if we can set this.
+                if (this.IsWritable)
+                {
+                    this._isDirty = value;
+                }
+            }
+
         }
 
         /// <summary>
@@ -296,7 +327,8 @@ namespace OfficeFileProperties.FileAccessors
         /// <summary>
         /// Closes file.
         /// </summary>
-        public abstract void CloseFile();
+        /// <param name="saveChanges">Save changes to this file.</param>
+        public abstract void CloseFile(bool saveChanges = false);
 
         /// <summary>
         /// Gets FileProperties object loaded with properties for current file.
@@ -304,35 +336,58 @@ namespace OfficeFileProperties.FileAccessors
         /// <returns>Loaded FileProperties object</returns>
         public virtual FileProperties GetFileProperties()
         {
-            // Get new file properties object.
-            var properties = new FileProperties();
-
             // Open file.
-            OpenFile();
+            this.OpenFile();
 
-            // Store filename and file type.
-            properties.Filename = this.Filename;
-            properties.FileType = this.FileType;
-
-            // Store properties.
-            properties.Author = this.Author;
-            properties.Company = this.Company;
-            properties.Comments = this.Comments;
-            properties.CreatedTimeUtc = this.CreatedTimeUtc;
-            properties.CustomProperties = this.CustomProperties;
-            properties.ModifiedTimeUtc = this.ModifiedTimeUtc;
-            properties.Title = this.Title;
+            // Get new file properties object.
+            var properties = new FileProperties
+            {
+                Filename = this.Filename,
+                FileType = this.FileType,
+                Comments = this.Comments,
+                Author = this.Author,
+                Company = this.Company,
+                CreatedTimeUtc = this.CreatedTimeUtc,
+                CustomProperties = this.CustomProperties,
+                ModifiedTimeUtc = this.ModifiedTimeUtc,
+                Title = this.Title
+            };
 
             // Close file.
-            CloseFile();
+            this.CloseFile();
 
             return properties;
         }
 
         /// <summary>
+        /// Test to ensure file is open.
+        /// </summary>
+        public void TestFileOpen()
+        {
+            // Throw exception if file is not open.
+            if (!this.IsOpen)
+            {
+                throw new InvalidOperationException("File is not open.");
+            }
+        }
+
+        public void TestFileWritable()
+        {
+            // Test to ensure file is open.
+            this.TestFileOpen();
+
+            // Throw exception if file is not writable.
+            if (!this.IsWritable)
+            {
+                throw new InvalidOperationException("File is not writable.");
+            }
+        }
+
+        /// <summary>
         /// Opens file.
         /// </summary>
-        public abstract void OpenFile();
+        /// <param name="writable">Open file in writable mode</param>
+        public abstract void OpenFile(bool writable = false);
 
         #endregion Methods
 

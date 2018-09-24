@@ -203,6 +203,11 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// </summary>
         private SummaryInformation SummaryInformation { get; set; }
 
+        public override bool IsWritable
+        {
+            get { return false; }
+        }
+
         #endregion Properties
 
         #region Methods
@@ -210,7 +215,8 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// <summary>
         /// Closes file.
         /// </summary>
-        public override void CloseFile()
+        /// <param name="saveChanges"></param>
+        public override void CloseFile(bool saveChanges = false)
         {
             // Mark file as closed.
             this.IsOpen = false;
@@ -226,7 +232,8 @@ namespace OfficeFileProperties.FileAccessors.Npoi
         /// <summary>
         /// Opens file.
         /// </summary>
-        public override void OpenFile()
+        /// <param name="writable"></param>
+        public override void OpenFile(bool writable = false)
         {
             // Open file stream.
             var stream = new FileStream(this.Filename, FileMode.Open, FileAccess.Read);

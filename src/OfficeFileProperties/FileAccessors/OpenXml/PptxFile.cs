@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.CustomProperties;
+using DocumentFormat.OpenXml.ExtendedProperties;
 
 namespace OfficeFileProperties.FileAccessors.OpenXml
 {
     /// <summary>
     /// Class for using Microsoft PowerPoint PPTX files.
     /// </summary>
-    public class PptxFile : FileBase<PresentationDocument>
+    public class PptxFile : OpenXmlFileBase<PresentationDocument>
     {
         #region Constructors
 
@@ -36,103 +37,18 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
 
         #region Methods
 
-        /// <summary>
-        /// Closes file.
-        /// </summary>
-        public override void CloseFile()
-        {
-            // Mark file as closed.
-            this.IsOpen = false;
-
-            // Close file if it still is accessible.
-            if (this.File != null)
-            {
-                // Close file.
-                this.File.Close();
-
-                // Dispose of file.
-                this.File.Dispose();
-            }
-
-            // Clear file object.
-            this.File = null;
-        }
 
         /// <summary>
         /// Opens file.
         /// </summary>
-        public override void OpenFile()
+        /// <param name="writable"></param>
+        public override void OpenFile(bool writable = false)
         {
             // Open file.
-            this.File = PresentationDocument.Open(this.Filename, false);
+            this.File = PresentationDocument.Open(this.Filename, writable);
 
             // Mark file as open.
             this.IsOpen = true;
-        }
-
-        /// <summary>
-        /// Created date in UTC time
-        /// </summary>
-        public override DateTime? CreatedTimeUtc
-        {
-            get
-            {
-                // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
-
-                if (this.File.PackageProperties.Created.HasValue)
-                {
-                    return this.File.PackageProperties.Created.Value.ToUniversalTime();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Created date in UTC time
-        /// </summary>
-        public override DateTime? ModifiedTimeUtc
-        {
-            get
-            {
-                // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
-
-                if (this.File.PackageProperties.Modified.HasValue)
-                {
-                    return this.File.PackageProperties.Modified.Value.ToUniversalTime();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Author name
-        /// </summary>
-        public override string Author
-        {
-            get
-            {
-                // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
-
-                return this.File.PackageProperties.Creator;
-            }
         }
 
         /// <summary>
@@ -143,46 +59,28 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
-                return ((this.File.ExtendedFilePropertiesPart != null) && (this.File.ExtendedFilePropertiesPart.Properties.Company != null)) ? this.File.ExtendedFilePropertiesPart.Properties.Company.InnerText : null;
+                return this.File.ExtendedFilePropertiesPart?.Properties?.Company?.InnerText;
             }
-        }
-
-        /// <summary>
-        /// Comments (description)
-        /// </summary>
-        public override string Comments
-        {
-            get
+            set
             {
-                // Ensure file is open.
-                if (!this.IsOpen)
+                // Ensure file is writable.
+                this.TestFileWritable();
+
+                // Add extended file properties part if it does not exist.
+                if (this.File.ExtendedFilePropertiesPart == null)
                 {
-                    throw new InvalidOperationException("File is not open.");
+                    this.File.AddExtendedFilePropertiesPart();
                 }
 
-                return this.File.PackageProperties.Description;
-            }
-        }
-
-        /// <summary>
-        /// Title
-        /// </summary>
-        public override string Title
-        {
-            get
-            {
-                // Ensure file is open.
-                if (!this.IsOpen)
+                // Add properties part if it does not exist.
+                if (this.File.ExtendedFilePropertiesPart.Properties == null)
                 {
-                    throw new InvalidOperationException("File is not open.");
+                    this.File.ExtendedFilePropertiesPart.Properties = new DocumentFormat.OpenXml.ExtendedProperties.Properties();
                 }
 
-                return this.File.PackageProperties.Title;
+                this.File.ExtendedFilePropertiesPart.Properties.Company = new Company(value);
             }
         }
 
@@ -209,6 +107,12 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
                                             .ToDictionary<CustomDocumentProperty, string, object>(cp => cp.Name.Value, cp => cp.InnerText);
 
                 return customProperties;
+            }
+            set
+            {
+                // Sample code at https://docs.microsoft.com/en-us/office/open-xml/how-to-set-a-custom-property-in-a-word-processing-document#sample-code
+
+                throw new NotImplementedException();
             }
         }
 

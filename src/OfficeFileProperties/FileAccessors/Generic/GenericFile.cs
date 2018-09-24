@@ -38,7 +38,8 @@ namespace OfficeFileProperties.FileAccessors.Generic
         /// <summary>
         /// Closes file.
         /// </summary>
-        public override void CloseFile()
+        /// <param name="saveChanges"></param>
+        public override void CloseFile(bool saveChanges = false)
         {
             // Mark file as closed.
             this.IsOpen = false;
@@ -47,10 +48,16 @@ namespace OfficeFileProperties.FileAccessors.Generic
             this.File = null;
         }
 
+        public override bool IsWritable
+        {
+            get { return false; }
+        }
+
         /// <summary>
         /// Opens file.
         /// </summary>
-        public override void OpenFile()
+        /// <param name="writable"></param>
+        public override void OpenFile(bool writable = false)
         {
             // Open file.
             this.File = new FileInfo(this.Filename);

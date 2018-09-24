@@ -82,7 +82,8 @@ namespace OfficeFileProperties
         /// <summary>
         /// Closes file.
         /// </summary>
-        void CloseFile();
+        /// <param name="saveChanges"></param>
+        void CloseFile(bool saveChanges = false);
 
         /// <summary>
         /// Gets FileProperties object loaded with properties for current file.
@@ -93,7 +94,8 @@ namespace OfficeFileProperties
         /// <summary>
         /// Opens file.
         /// </summary>
-        void OpenFile();
+        /// <param name="writable"></param>
+        void OpenFile(bool writable = false);
 
         #endregion Methods
     }

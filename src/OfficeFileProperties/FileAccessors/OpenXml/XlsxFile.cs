@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.CustomProperties;
+using DocumentFormat.OpenXml.ExtendedProperties;
 
 namespace OfficeFileProperties.FileAccessors.OpenXml
 {
     /// <summary>
     /// Class for using Microsoft Excel XLSX files.
     /// </summary>
-    public class XlsxFile : FileBase<SpreadsheetDocument>
+    public class XlsxFile : OpenXmlFileBase<SpreadsheetDocument>
     {
         #region Constructors
 
@@ -36,86 +37,20 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
 
         #region Methods
 
-        /// <summary>
-        /// Closes file.
-        /// </summary>
-        public override void CloseFile()
-        {
-            // Mark file as closed.
-            this.IsOpen = false;
-
-            // Close file if it still is accessible.
-            if (this.File != null)
-            {
-                // Close file.
-                this.File.Close();
-
-                // Dispose of file.
-                this.File.Dispose();
-            }
-
-            // Clear file object.
-            this.File = null;
-        }
 
         /// <summary>
         /// Opens file.
         /// </summary>
-        public override void OpenFile()
+        /// <param name="writable"></param>
+        public override void OpenFile(bool writable = false)
         {
             // Open file.
-            this.File = SpreadsheetDocument.Open(this.Filename, false);
+            this.File = SpreadsheetDocument.Open(this.Filename, writable);
 
             // Mark file as open.
             this.IsOpen = true;
         }
 
-        /// <summary>
-        /// Created date in UTC time
-        /// </summary>
-        public override DateTime? CreatedTimeUtc
-        {
-            get
-            {
-                if (this.File.PackageProperties.Created.HasValue)
-                {
-                    return this.File.PackageProperties.Created.Value.ToUniversalTime();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Created date in UTC time
-        /// </summary>
-        public override DateTime? ModifiedTimeUtc
-        {
-            get
-            {
-                if (this.File.PackageProperties.Modified.HasValue)
-                {
-                    return this.File.PackageProperties.Modified.Value.ToUniversalTime();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Author name
-        /// </summary>
-        public override string Author
-        {
-            get
-            {
-                return this.File.PackageProperties.Creator;
-            }
-        }
 
         /// <summary>
         /// Company name
@@ -124,35 +59,29 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
         {
             get
             {
-                return ((this.File.ExtendedFilePropertiesPart != null) && (this.File.ExtendedFilePropertiesPart.Properties.Company != null)) ? this.File.ExtendedFilePropertiesPart.Properties.Company.InnerText : null;
-            }
-        }
-
-        /// <summary>
-        /// Comments (description)
-        /// </summary>
-        public override string Comments
-        {
-            get
-            {
                 // Ensure file is open.
-                if (!this.IsOpen)
+                this.TestFileOpen();
+
+                return this.File.ExtendedFilePropertiesPart?.Properties?.Company?.InnerText;
+            }
+            set
+            {
+                // Ensure file is writable.
+                this.TestFileWritable();
+
+                // Add extended file properties part if it does not exist.
+                if (this.File.ExtendedFilePropertiesPart == null)
                 {
-                    throw new InvalidOperationException("File is not open.");
+                    this.File.AddExtendedFilePropertiesPart();
                 }
 
-                return this.File.PackageProperties.Description;
-            }
-        }
+                // Add properties part if it does not exist.
+                if (this.File.ExtendedFilePropertiesPart.Properties == null)
+                {
+                    this.File.ExtendedFilePropertiesPart.Properties = new DocumentFormat.OpenXml.ExtendedProperties.Properties();
+                }
 
-        /// <summary>
-        /// Title
-        /// </summary>
-        public override string Title
-        {
-            get
-            {
-                return this.File.PackageProperties.Title;
+                this.File.ExtendedFilePropertiesPart.Properties.Company = new Company(value);
             }
         }
 
@@ -173,6 +102,12 @@ namespace OfficeFileProperties.FileAccessors.OpenXml
                                             .ToDictionary<CustomDocumentProperty, string, object>(cp => cp.Name.Value, cp => cp.InnerText.ToString());
 
                 return customProperties;
+            }
+            set
+            {
+                // Sample code at https://docs.microsoft.com/en-us/office/open-xml/how-to-set-a-custom-property-in-a-word-processing-document#sample-code
+
+                throw new NotImplementedException();
             }
         }
 

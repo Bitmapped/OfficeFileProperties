@@ -46,6 +46,14 @@ namespace OfficeFileProperties.FileAccessors.Dao
 
         #region Properties
 
+        public override bool IsWritable
+        {
+            get
+            {
+                return this.File.Updatable;
+            }
+        }
+
         /// <summary>
         /// Author name
         /// </summary>
@@ -54,10 +62,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 try
                 {
@@ -77,6 +82,50 @@ namespace OfficeFileProperties.FileAccessors.Dao
                     }
                 }
             }
+            set
+            {
+                // Ensure file is writable.
+                this.TestFileWritable();
+
+                // Try to delete existing property.
+                try
+                {
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Delete("Author");
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+
+                // Try to set new property.
+                try
+                {
+                    var prop = this.File.CreateProperty("Author", AccessDao.DataTypeEnum.dbText, value, true);
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Append(prop);
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -87,10 +136,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 try
                 {
@@ -110,6 +156,50 @@ namespace OfficeFileProperties.FileAccessors.Dao
                     }
                 }
             }
+            set
+            {
+                // Ensure file is writable.
+                this.TestFileWritable();
+
+                // Try to delete existing property.
+                try
+                {
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Delete("Company");
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+
+                // Try to set new property.
+                try
+                {
+                    var prop = this.File.CreateProperty("Company", AccessDao.DataTypeEnum.dbText, value, true);
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Append(prop);
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -120,10 +210,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 try
                 {
@@ -143,6 +230,50 @@ namespace OfficeFileProperties.FileAccessors.Dao
                     }
                 }
             }
+            set
+            {
+                // Ensure file is writable.
+                this.TestFileWritable();
+
+                // Try to delete existing property.
+                try
+                {
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Delete("Comments");
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+
+                // Try to set new property.
+                try
+                {
+                    var prop = this.File.CreateProperty("Comments", AccessDao.DataTypeEnum.dbText, value, true);
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Append(prop);
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -153,10 +284,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 DateTime? createdTimeUtc = null;
 
@@ -203,6 +331,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
 
                 return createdTimeUtc;
             }
+            set { throw new InvalidOperationException(); }
         }
 
         /// <summary>
@@ -213,10 +342,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 try
                 {
@@ -321,10 +447,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 DateTime? modifiedTimeUtc = null;
 
@@ -384,6 +507,10 @@ namespace OfficeFileProperties.FileAccessors.Dao
 
                 return modifiedTimeUtc;
             }
+            set
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         /// <summary>
@@ -394,10 +521,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
             get
             {
                 // Ensure file is open.
-                if (!this.IsOpen)
-                {
-                    throw new InvalidOperationException("File is not open.");
-                }
+                this.TestFileOpen();
 
                 try
                 {
@@ -417,6 +541,50 @@ namespace OfficeFileProperties.FileAccessors.Dao
                     }
                 }
             }
+            set
+            {
+                // Ensure file is writable.
+                this.TestFileWritable();
+
+                // Try to delete existing property.
+                try
+                {
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Delete("Title");
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+
+                // Try to set new property.
+                try
+                {
+                    var prop = this.File.CreateProperty("Title", AccessDao.DataTypeEnum.dbText, value, true);
+                    this.File.Containers["Databases"].Documents["SummaryInfo"].Properties.Append(prop);
+                }
+                catch (COMException ce)
+                {
+                    // If conversion problem or value doesn't exist, return null
+                    if (((uint)ce.ErrorCode == 0x800A0D1E) || ((uint)ce.ErrorCode == 0x800A0CC6) || ((uint)ce.ErrorCode == 0x800A0CC1))
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        // Rethrow the exception.
+                        throw ce;
+                    }
+                }
+            }
         }
 
         #endregion Properties
@@ -426,7 +594,8 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// <summary>
         /// Closes file.
         /// </summary>
-        public override void CloseFile()
+        /// <param name="saveChanges"></param>
+        public override void CloseFile(bool saveChanges = false)
         {
             // Mark file as closed.
             this.IsOpen = false;
@@ -445,7 +614,8 @@ namespace OfficeFileProperties.FileAccessors.Dao
         /// <summary>
         /// Opens file.
         /// </summary>
-        public override void OpenFile()
+        /// <param name="writable"></param>
+        public override void OpenFile(bool writable = false)
         {
             if (this._dbWorkspace == null)
             {
@@ -453,7 +623,7 @@ namespace OfficeFileProperties.FileAccessors.Dao
             }
 
             // Open file.
-            this.File = this._dbWorkspace.OpenDatabase(this.Filename, false, true, "");
+            this.File = this._dbWorkspace.OpenDatabase(this.Filename, false, !writable, "");
 
             // Mark file as open.
             this.IsOpen = true;

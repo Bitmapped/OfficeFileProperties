@@ -90,6 +90,7 @@
     <Compile Include="FileAccessors\Generic\GenericFile.cs" />
     <Compile Include="FileAccessors\IFileBase.cs" />
     <Compile Include="FileAccessors\Npoi\NpoiFile.cs" />
+    <Compile Include="FileAccessors\OpenXml\OpenXmlFileBase.cs" />
     <Compile Include="IFile.cs" />
     <Compile Include="FileAccessors\OpenXml\PptxFile.cs" />
     <Compile Include="FileAccessors\OpenXml\XlsxFile.cs" />

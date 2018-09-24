@@ -310,7 +310,8 @@ namespace OfficeFileProperties
         /// <summary>
         /// Closes file.
         /// </summary>
-        public void CloseFile()
+        /// <param name="saveChanges"></param>
+        public void CloseFile(bool saveChanges = false)
         {
             FileAccessor.CloseFile();
         }
@@ -335,7 +336,8 @@ namespace OfficeFileProperties
         /// <summary>
         /// Opens file.
         /// </summary>
-        public void OpenFile()
+        /// <param name="writable"></param>
+        public void OpenFile(bool writable = false)
         {
             FileAccessor.OpenFile();
         }
@@ -351,7 +353,7 @@ namespace OfficeFileProperties
                 if (disposing)
                 {
                     // Close file
-                    CloseFile();
+                    this.CloseFile();
                 }
 
                 _disposed = true;
