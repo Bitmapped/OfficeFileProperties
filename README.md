@@ -13,9 +13,9 @@ For Word, Excel, and PowerPoint, this class manipulates file properties directly
 1. NET Framework 4.5
 2. One of the following installed on computer if Access databases will be used:
     * Microsoft Access MSI-based install (not Microsoft Office 365 or click-to-run-based Microsoft Office version)
-    * [Microsoft Access 2016 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=54920) if Microsoft Office 365 or a click-to-run-based Microsoft Office version is not installed on the system
+    * [Microsoft Access Database Engine 2016 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=54920) if Microsoft Office 365 or a click-to-run-based Microsoft Office version is not installed on the system
     * [Microsoft Access 2010 Database Engine Redistributable](https://www.microsoft.com/en-us/download/Confirmation.aspx?ID=13255) if Microsoft Office 365 or a click-to-run-based Microsoft Office version is installed on the system due to compatibility issues with click-to-run
-
+    * Click2Run-based installations of Microsoft Office or the runtime redistributables, like the [Office 365 Access Runtime](https://support.office.com/en-us/article/download-and-install-office-365-access-runtime-185c5a32-8ba9-491e-ac76-91cbe3ea09c9) are not compatible with the DAO interop classes used by this code.
 
 ## NuGet availability
 This project is available on [NuGet](https://www.nuget.org/packages/OfficeFileProperties/).
@@ -45,4 +45,4 @@ using (var fsFile = new OfficeFile(fullFileName))
 
 ## Known issues
 ### BigInt type in Access 2016 v16.7 databases
-The Office 365 version of Access 2016 introduced support for the [BigInt (Large Number) data type](https://support.office.com/en-us/article/Using-the-Large-Number-data-type-5b623f6e-641d-4e97-8bdf-b77bae076f70) in version 16.0.7812. When this data type is used, the database format is automatically upgraded to v16.7. MSI-based installations of Access 2016 and the Access 2016 Runtime cannot open these databases and will thrown an exception with error code `0x800A0F74`. The only solution is believed to be to install an Office 365-based version of Access on the computer.
+The Office 365 version of Access 2016 introduced support for the [BigInt (Large Number) data type](https://support.office.com/en-us/article/Using-the-Large-Number-data-type-5b623f6e-641d-4e97-8bdf-b77bae076f70) in version 16.0.7812. When this data type is used, the database format is automatically upgraded to v16.7. MSI-based installations of Access 2016 and the Microsoft Access Database Engine 2016 Redistributable cannot open these databases and will thrown an exception with error code `0x800A0F74`. The only solution is believed to be to install an MSI-based version of Office 2019.
