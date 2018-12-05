@@ -14,10 +14,17 @@ namespace OfficeFileProperties
         #region Constructors
 
         /// <summary>
+        /// Accesses Microsoft Office files. Falls back to using generic filetype processing if type-specific access fails.
+        /// </summary>
+        /// <param name="filename">Filename to open</param>
+        public OfficeFile(string filename) : this(filename, true) { }
+
+        /// <summary>
         /// Accesses Microsoft Office files.
         /// </summary>
         /// <param name="filename">Filename to open</param>
-        public OfficeFile(string filename)
+        /// <param name="fallbackOnError">If true, errors with exceptions will be thrown rather than defaulting to basic file properties</param>
+        public OfficeFile(string filename, bool fallbackOnError)
         {
             // Ensure file exists.
             if (!File.Exists(filename))
@@ -82,6 +89,12 @@ namespace OfficeFileProperties
             }
             catch (Exception ex)
             {
+                // If fallback is disabled, throw exception.
+                if (!fallbackOnError)
+                {
+                    throw ex;
+                }
+
                 // Try using generic.
                 try
                 {
