@@ -94,15 +94,17 @@ namespace OfficeFileProperties
                 {
                     throw ex;
                 }
-
-                // Try using generic.
-                try
+                else
                 {
-                    this._fileAccessor = new GenericFile(filename);
-                }
-                catch
-                {
-                    throw new Exception($"Cannot get properties from file {filename}.");
+                    // Try using generic accessor.
+                    try
+                    {
+                        this._fileAccessor = new GenericFile(filename);
+                    }
+                    catch
+                    {
+                        throw new Exception($"Cannot get properties from file {filename}.");
+                    }
                 }
             }
         }
