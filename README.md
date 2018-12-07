@@ -16,10 +16,17 @@ For Word, Excel, and PowerPoint, this class manipulates file properties directly
     * [Microsoft Access Database Engine 2016 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=54920) if Microsoft Office 365 or a click-to-run-based Microsoft Office version is not installed on the system
     * [Microsoft Access 2010 Database Engine Redistributable](https://www.microsoft.com/en-us/download/Confirmation.aspx?ID=13255) if Microsoft Office 365 or a click-to-run-based Microsoft Office version is installed on the system due to compatibility issues with click-to-run
     * Click2Run-based installations of Microsoft Office or the runtime redistributables, like the [Office 365 Access Runtime](https://support.office.com/en-us/article/download-and-install-office-365-access-runtime-185c5a32-8ba9-491e-ac76-91cbe3ea09c9) are not compatible with the DAO interop classes used by this code.
-    * You may need to install the 32-bit version of Access, and if you are using OfficeFileProperties in conjunction with IIS, enable 32-bit applications on your application pool. 64-bit versions of the Access database engine are known to not work with IIS.
+    * You may need to install the 32-bit version of Access or the database engine. 64-bit versions of the Access database engine are known not to be recognized by IIS.
 
 ## NuGet availability
 This project is available on [NuGet](https://www.nuget.org/packages/OfficeFileProperties/).
+
+## IIS Web Server Configuration
+To interact with Access databases from IIS, two configuration changes must be made on your application pool:
+1. **Enable 32-Bit Applications** must be set to **True** for the Access database engine COM object to be recognized
+2. **Load User Profile** must be set to **True** or the IIS worker process will crash when accessing Access databases
+
+These changes are only required if Access databases are to be accessed using OfficeFileProperties.
 
 ## Usage instructions
 ### Getting started
